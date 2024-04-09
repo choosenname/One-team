@@ -1,5 +1,7 @@
 import {LoginButton} from "@/components/auth/login-button";
 import {Button} from "@/components/ui/button";
+import React from "react";
+import {InitialModal} from "@/components/modals/initial-modal";
 
 export default function Home() {
     return (
@@ -20,6 +22,7 @@ export default function Home() {
                     </LoginButton>
                 </div>
             </div>
+            <InitialModal />
         </main>
     );
 }
