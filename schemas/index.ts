@@ -19,7 +19,7 @@ export const RegisterSchema = z.object({
     }),
 });
 
-export const SettingsSchema = z.object({
+export const ProfileSchema = z.object({
     name: z.optional(z.string().min(3,{
         message: "Name is required",
     })),

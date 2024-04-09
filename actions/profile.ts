@@ -1,13 +1,13 @@
 "use server"
 
-import {SettingsSchema} from "@/schemas";
+import {ProfileSchema} from "@/schemas";
 import {z} from "zod";
 import {currentUser} from "@/lib/auth";
 import {getUserById} from "@/data/user";
 import {db} from "@/lib/db";
 import {unstable_update} from "@/auth";
 
-export const settings = async (values: z.infer<typeof SettingsSchema>) => {
+export const profile = async (values: z.infer<typeof ProfileSchema>) => {
     const user = await currentUser();
 
     if (!user) {
@@ -27,7 +27,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
         }
     });
 
-    unstable_update({
+    await unstable_update({
         user: {
             name: updatedUser.name,
             role: updatedUser.role,
