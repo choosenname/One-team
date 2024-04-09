@@ -11,6 +11,7 @@ export const {
     auth,
     signIn,
     signOut,
+    unstable_update
 } = NextAuth({
     pages: {
         signIn: "/auth/login",
@@ -26,6 +27,11 @@ export const {
                 session.user.role = token.role as UserRole;
             }
 
+            if(session.user) {
+                session.user.name = token.name;
+                session.user.imageUrl = token.imageUrl as string;
+            }
+
             return session;
         },
         async jwt({ token }) {
@@ -35,7 +41,9 @@ export const {
 
             if (!existingUser) return token;
 
+            token.name = existingUser.name;
             token.role = existingUser.role;
+            token.imageUrl = existingUser.imageUrl;
 
             return token;
         }
