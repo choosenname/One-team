@@ -16,7 +16,7 @@ interface FileUploadProps {
 export const FileUpload = ({onChange, value, endpoint}: FileUploadProps) => {
     const fileExtension = value?.split(".").pop();
 
-    const imageExtensions = ["jpg", "jpeg", "png", "gif"];
+    const imageExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
 
     const isImage = !!value && !!fileExtension && imageExtensions.includes(fileExtension?.toLowerCase());
 

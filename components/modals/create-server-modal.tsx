@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
 
 import {
     Dialog,
@@ -13,19 +13,12 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FileUpload } from "@/components/files/file-upload";
-import { useRouter } from "next/navigation";
-import { useModal } from "@/hooks/use-modal-store";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {FileUpload} from "@/components/file-upload";
+import {useRouter} from "next/navigation";
+import {useModal} from "@/hooks/use-modal-store";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -37,7 +30,7 @@ const formSchema = z.object({
 });
 
 export const CreateServerModal = () => {
-    const { isOpen, onClose, type } = useModal();
+    const {isOpen, onClose, type} = useModal();
     const router = useRouter();
 
     const isModalOpen = isOpen && type === "createServer";
@@ -87,7 +80,7 @@ export const CreateServerModal = () => {
                                 <FormField
                                     control={form.control}
                                     name="imageUrl"
-                                    render={({ field }) => (
+                                    render={({field}) => (
                                         <FormItem>
                                             <FormControl>
                                                 <FileUpload
@@ -104,7 +97,7 @@ export const CreateServerModal = () => {
                             <FormField
                                 control={form.control}
                                 name="name"
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel
                                             className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
@@ -119,7 +112,7 @@ export const CreateServerModal = () => {
                                                 {...field}
                                             />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
