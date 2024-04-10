@@ -1,28 +1,28 @@
 import {LoginButton} from "@/components/auth/login-button";
-import {Button} from "@/components/ui/button";
 import React from "react";
 import {InitialModal} from "@/components/modals/initial-modal";
+import {currentUser} from "@/lib/auth";
+import {db} from "@/lib/db";
+import {redirect} from "next/navigation";
 
-export default function Home() {
-    return (
-        <main
-            className="flex h-full flex-col items-center justify-center">
-            <div className="space-y-6 text-center">
-                <h1 className="text-6xl font-semibold drop-shadow-md">
-                    🔐 Auth
-                </h1>
-                <p className="text-lg">
-                    A simple authentication service
-                </p>
-                <div>
-                    <LoginButton>
-                        <Button size="lg">
-                            Sign in
-                        </Button>
-                    </LoginButton>
-                </div>
-            </div>
-            <InitialModal />
-        </main>
-    );
+export default async function Home() {
+    const user = await currentUser();
+
+    if (user) {
+        const server = await db.server.findFirst({
+            where: {
+                members: {
+                    some: {
+                        userId: user.id
+                    }
+                }
+            }
+        });
+
+        if (server) {
+            return redirect(`/servers/${server.id}`);
+        }
+    }
+
+    return <InitialModal/>;
 }

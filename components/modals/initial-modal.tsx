@@ -43,7 +43,7 @@ export const InitialModal = () => {
 
     const onSubmit = async (values: z.infer<typeof ServerSchema>) => {
         try {
-            await axios.post("/api/channels", values);
+            await axios.post("/api/servers", values);
 
             form.reset();
             router.refresh();
