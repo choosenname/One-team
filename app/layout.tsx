@@ -5,6 +5,7 @@ import React from "react";
 import {auth} from "@/auth";
 import {SessionProvider} from "next-auth/react";
 import {ThemeProvider} from "@/components/providers/theme-provider";
+import {ModalProvider} from "@/components/providers/modal-provider";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
                 enableSystem
                 storageKey="one-team-theme"
             >
+                <ModalProvider />
                 {children}
             </ThemeProvider>
             </body>
