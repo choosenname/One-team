@@ -6,12 +6,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+    Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
 } from "@/components/ui/dialog";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -23,8 +18,7 @@ import {useModal} from "@/hooks/use-modal-store";
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Server name is required."
-    }),
-    imageUrl: z.string().min(1, {
+    }), imageUrl: z.string().min(1, {
         message: "Server image is required."
     })
 });
@@ -36,10 +30,8 @@ export const CreateServerModal = () => {
     const isModalOpen = isOpen && type === "createServer";
 
     const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            name: "",
-            imageUrl: "",
+        resolver: zodResolver(formSchema), defaultValues: {
+            name: "", imageUrl: "",
         }
     });
 
@@ -62,8 +54,7 @@ export const CreateServerModal = () => {
         onClose();
     }
 
-    return (
-        <Dialog open={isModalOpen} onOpenChange={handleClose}>
+    return (<Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
@@ -80,8 +71,7 @@ export const CreateServerModal = () => {
                                 <FormField
                                     control={form.control}
                                     name="imageUrl"
-                                    render={({field}) => (
-                                        <FormItem>
+                                    render={({field}) => (<FormItem>
                                             <FormControl>
                                                 <FileUpload
                                                     endpoint="serverImage"
@@ -89,16 +79,14 @@ export const CreateServerModal = () => {
                                                     onChange={field.onChange}
                                                 />
                                             </FormControl>
-                                        </FormItem>
-                                    )}
+                                        </FormItem>)}
                                 />
                             </div>
 
                             <FormField
                                 control={form.control}
                                 name="name"
-                                render={({field}) => (
-                                    <FormItem>
+                                render={({field}) => (<FormItem>
                                         <FormLabel
                                             className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                         >
@@ -113,8 +101,7 @@ export const CreateServerModal = () => {
                                             />
                                         </FormControl>
                                         <FormMessage/>
-                                    </FormItem>
-                                )}
+                                    </FormItem>)}
                             />
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">
@@ -125,6 +112,5 @@ export const CreateServerModal = () => {
                     </form>
                 </Form>
             </DialogContent>
-        </Dialog>
-    )
+        </Dialog>)
 }
