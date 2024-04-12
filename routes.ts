@@ -26,6 +26,9 @@ export const authRoutes = [
 export const publicApiPrefix = [
     "/api/auth",
     "/api/uploadthing",
+    "/api/channels",
+    "/api/members",
+    "/api/servers"
 ];
 
 /**
