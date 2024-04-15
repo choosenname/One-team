@@ -1,6 +1,6 @@
-import { NextApiRequest } from "next";
+import {NextApiRequest} from "next";
 
-import { db } from "@/lib/db";
+import {db} from "@/lib/db";
 import {NextApiResponseServerIo} from "@/types";
 import {auth} from "@/auth";
 
@@ -11,11 +11,9 @@ export const currentUserPages = async (req: NextApiRequest, res: NextApiResponse
         return null;
     }
 
-    const user = await db.user.findUnique({
+    return db.user.findUnique({
         where: {
             id: session.user.id
         }
     });
-
-    return user;
 }
