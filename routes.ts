@@ -28,7 +28,10 @@ export const publicApiPrefix = [
     "/api/uploadthing",
     "/api/channels",
     "/api/members",
-    "/api/servers"
+    "/api/servers",
+    "/api/socket/io",
+    "/api/socket/messages",
+    "/api"
 ];
 
 /**

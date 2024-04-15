@@ -6,6 +6,7 @@ import {auth} from "@/auth";
 import {SessionProvider} from "next-auth/react";
 import {ThemeProvider} from "@/components/providers/theme-provider";
 import {ModalProvider} from "@/components/providers/modal-provider";
+import {SocketProvider} from "@/components/providers/socket-provider";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -19,8 +20,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const session = await auth();
-    return (
-        <SessionProvider session={session}>
+    return (<SessionProvider session={session}>
             <html lang="en" suppressHydrationWarning>
             <body className={inter.className}>
             <ThemeProvider
@@ -29,11 +29,12 @@ export default async function RootLayout({
                 enableSystem
                 storageKey="one-team-theme"
             >
-                <ModalProvider />
-                {children}
+                <SocketProvider>
+                    <ModalProvider/>
+                    {children}
+                </SocketProvider>
             </ThemeProvider>
             </body>
             </html>
-        </SessionProvider>
-    );
+        </SessionProvider>);
 }
