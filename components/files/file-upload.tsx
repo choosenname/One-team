@@ -6,6 +6,7 @@ import Image from "next/image";
 import { UploadDropzone } from "@/lib/uploadthing";
 
 import "@uploadthing/react/styles.css";
+import {imageExtensions, ImageType} from "@/types";
 
 interface FileUploadProps {
     onChange: (url?: string) => void;
@@ -16,9 +17,7 @@ interface FileUploadProps {
 export const FileUpload = ({onChange, value, endpoint}: FileUploadProps) => {
     const fileExtension = value?.split(".").pop();
 
-    const imageExtensions = ["jpg", "jpeg", "png", "gif", "svg"];
-
-    const isImage = !!value && !!fileExtension && imageExtensions.includes(fileExtension?.toLowerCase());
+    const isImage = fileExtension ? imageExtensions.includes(fileExtension as ImageType) : false;
     if (value) {
         if (isImage) {
             return (

@@ -14,3 +14,17 @@ export type NextApiResponseServerIo = NextApiResponse & {
         };
     };
 };
+
+// Типы для картинок
+export type ImageType = "jpg" | "jpeg" | "png" | "gif" | "svg";
+export const imageExtensions: ImageType[] = ["jpg", "jpeg", "png", "gif", "svg"];
+
+// Типы для видео
+export type VideoType = "mp4" | "avi" | "mov" | "wmv" | "mkv";
+export const videoExtensions: VideoType[] = ["mp4", "avi", "mov", "wmv", "mkv"];
+
+// Типы для аудио
+export type AudioType = "mp3" | "wav" | "ogg" | "flac" | "aac";
+export const audioExtensions: AudioType[] = ["mp3", "wav", "ogg", "flac", "aac"];
+
+type FileType = ImageType | VideoType | AudioType | "pdf" | "other";
