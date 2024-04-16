@@ -4,6 +4,7 @@ import {currentUser} from "@/lib/auth";
 import { ChatHeader } from "@/components/chat/chat-header";
 import { db } from "@/lib/db";
 import {ChatInput} from "@/components/chat/chat-input";
+import {ChatMessages} from "@/components/chat/chat-messages";
 
 interface ChannelIdPageProps {
     params: {
@@ -18,7 +19,7 @@ const ChannelIdPage = async ({
     const user = await currentUser();
 
     if (!user) {
-        return ("/auth/login");
+        return ("/login");
     }
 
     const channel = await db.channel.findUnique({
@@ -45,7 +46,20 @@ const ChannelIdPage = async ({
                 serverId={channel.serverId}
                 type="channel"
             />
-            <div className="flex-1">Future Messages</div>
+            <ChatMessages
+                member={member}
+                name={channel.name}
+                chatId={channel.id}
+                type="channel"
+                apiUrl="/api/messages"
+                socketUrl="/api/socket/messages"
+                socketQuery={{
+                    channelId: channel.id,
+                    serverId: channel.serverId,
+                }}
+                paramKey="channelId"
+                paramValue={channel.id}
+            />
             <ChatInput
                 name={channel.name}
                 type="channel"

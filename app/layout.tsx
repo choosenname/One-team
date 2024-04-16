@@ -7,6 +7,7 @@ import {SessionProvider} from "next-auth/react";
 import {ThemeProvider} from "@/components/providers/theme-provider";
 import {ModalProvider} from "@/components/providers/modal-provider";
 import {SocketProvider} from "@/components/providers/socket-provider";
+import {QueryProvider} from "@/components/providers/query-provider";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -21,20 +22,22 @@ export default async function RootLayout({
 }>) {
     const session = await auth();
     return (<SessionProvider session={session}>
-            <html lang="en" suppressHydrationWarning>
-            <body className={inter.className}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="light"
-                enableSystem
-                storageKey="one-team-theme"
-            >
-                <SocketProvider>
-                    <ModalProvider/>
+        <html lang="en" suppressHydrationWarning>
+        <body className={inter.className}>
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            storageKey="one-team-theme"
+        >
+            <SocketProvider>
+                <ModalProvider/>
+                <QueryProvider>
                     {children}
-                </SocketProvider>
-            </ThemeProvider>
-            </body>
-            </html>
-        </SessionProvider>);
+                </QueryProvider>
+            </SocketProvider>
+        </ThemeProvider>
+        </body>
+        </html>
+    </SessionProvider>);
 }
