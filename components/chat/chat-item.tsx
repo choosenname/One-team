@@ -20,6 +20,7 @@ import {audioExtensions, AudioType, imageExtensions, ImageType, videoExtensions,
 import VideoPlayer from "@/components/video-player";
 import AudioPlayer from "@/components/audio-player";
 import {FileType} from "next/dist/lib/file-exists";
+import {useModal} from "@/hooks/use-modal-store";
 
 interface ChatItemProps {
     id: string;
@@ -59,7 +60,7 @@ export const ChatItem = ({
                              socketQuery
                          }: ChatItemProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const { onOpen } = useModal();
 
     useEffect(() => {
         const handleKeyDown = (event: any) => {
@@ -244,6 +245,10 @@ export const ChatItem = ({
                         </ActionTooltip>)}
                     <ActionTooltip label="Delete">
                         <Trash
+                            onClick={() => onOpen("deleteMessage", {
+                                apiUrl: `${socketUrl}/${id}`,
+                                query: socketQuery,
+                            })}
                             className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
                         />
                     </ActionTooltip>
