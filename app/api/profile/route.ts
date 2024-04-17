@@ -3,14 +3,12 @@ import {NextResponse} from "next/server";
 import {db} from "@/lib/db";
 import {unstable_update} from "@/auth";
 
-export { GET, POST } from "@/auth"
-
 export async function PATCH(
     req: Request,
 ) {
     try {
         const user = await currentUser();
-        const { name, password, imageUrl } = await req.json();
+        const { name, imageUrl, password } = await req.json();
 
         if (!user) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -22,8 +20,8 @@ export async function PATCH(
             },
             data: {
                 name,
-                password,
                 imageUrl,
+                password
             }
         });
 

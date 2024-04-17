@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, User, Settings } from "lucide-react"
+import {LogOut, Settings} from "lucide-react"
 
 import {
     DropdownMenu,
@@ -8,35 +8,32 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-    Avatar,
-    AvatarImage,
-    AvatarFallback,
-} from "@/components/ui/avatar";
-import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
-import {NavigateButton} from "@/components/navigate-button";
+import {UserAvatar} from "@/components/user-avatar";
+import {Button} from "@/components/ui/button";
+import {useModal} from "@/hooks/use-modal-store";
+import {User} from "@prisma/client";
 
-export const UserButton = () => {
-    const user = useCurrentUser();
+
+interface UserButtonProps {
+    user: User;
+}
+
+export const UserButton = ({user}: UserButtonProps) => {
+    const { onOpen } = useModal();
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar>
-                    <AvatarImage src={user?.image || ""} />
-                    <AvatarFallback className="bg-sky-500">
-                        <User className="text-white" />
-                    </AvatarFallback>
-                </Avatar>
+                <UserAvatar src={user.imageUrl}/>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="end">
-                <NavigateButton path={"/profile"}>
+                <Button onClick={() => onOpen("editProfile", {user})}>
                     <DropdownMenuItem>
                         <Settings className="h-4 w-4 mr-2"/>
                         Profile
                     </DropdownMenuItem>
-                </NavigateButton>
+                </Button>
                 <LogoutButton>
                     <DropdownMenuItem>
                         <LogOut className="h-4 w-4 mr-2" />

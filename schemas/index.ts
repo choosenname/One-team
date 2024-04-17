@@ -1,5 +1,4 @@
 import * as z from "zod";
-import {UserRole} from "@prisma/client";
 
 export const LoginSchema = z.object({
     name: z.string().min(1,{
@@ -23,7 +22,12 @@ export const ProfileSchema = z.object({
     name: z.optional(z.string().min(3,{
         message: "Name is required",
     })),
-    role: z.enum([UserRole.ADMIN, UserRole.USER]),
+    password: z.string().min(6, {
+        message: "Minimum 6 characters required",
+    }),
+    imageUrl: z.string().min(1, {
+        message: "Profile image is required."
+    }),
 });
 
 export const ServerSchema = z.object({
