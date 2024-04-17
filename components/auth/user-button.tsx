@@ -16,6 +16,7 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
 import {NavigateButton} from "@/components/navigate-button";
+import {UserAvatar} from "@/components/user-avatar";
 
 export const UserButton = () => {
     const user = useCurrentUser();
@@ -23,12 +24,7 @@ export const UserButton = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar>
-                    <AvatarImage src={user?.image || ""} />
-                    <AvatarFallback className="bg-sky-500">
-                        <User className="text-white" />
-                    </AvatarFallback>
-                </Avatar>
+                <UserAvatar src={user?.image}/>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="end">
                 <NavigateButton path={"/profile"}>
