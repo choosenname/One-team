@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -31,8 +30,7 @@ import {ProfileSchema} from "@/schemas";
 
 export const EditProfileModal = () => {
     const { isOpen, onClose, type, data } = useModal();
-    const router = useRouter();
-
+    useRouter();
     const isModalOpen = isOpen && type === "editProfile";
     const { user } = data;
 

@@ -1,5 +1,4 @@
 import * as z from "zod";
-import {UserRole} from "@prisma/client";
 
 export const LoginSchema = z.object({
     name: z.string().min(1,{
