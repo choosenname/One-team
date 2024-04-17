@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/avatar";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { LogoutButton } from "@/components/auth/logout-button";
-import {NavigateButton} from "@/components/NavigateButton";
+import {NavigateButton} from "@/components/navigate-button";
 
 export const UserButton = () => {
     const user = useCurrentUser();
