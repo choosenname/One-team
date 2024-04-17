@@ -7,11 +7,18 @@ import {Separator} from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {ModeToggle} from "@/components/mode-toggle";
 import {UserButton} from "@/components/auth/user-button";
+import {getUserById} from "@/data/user";
 
 export const NavigationSidebar = async () => {
     const user = await currentUser();
 
-    if (!user) {
+    if (!user || !user.id) {
+        return redirect("/");
+    }
+
+    const dbUser = await getUserById(user.id);
+
+    if (!dbUser) {
         return redirect("/");
     }
 
@@ -46,7 +53,7 @@ export const NavigationSidebar = async () => {
             </ScrollArea>
             <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
                 <ModeToggle/>
-                <UserButton/>
+                <UserButton user={dbUser} />
             </div>
         </div>
     )
