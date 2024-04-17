@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { getOrCreateConversation } from "@/lib/conversation";
 import { currentUser } from "@/lib/auth";
 import { ChatHeader } from "@/components/chat/chat-header";
+import {ChatMessages} from "@/components/chat/chat-messages";
+import {ChatInput} from "@/components/chat/chat-input";
 /*import { ChatMessages } from "@/components/chat/chat-messages";
 import { ChatInput } from "@/components/chat/chat-input";
 import { MediaRoom } from "@/components/media-room";*/
@@ -66,7 +68,7 @@ const MemberIdPage = async ({
                     video={true}
                     audio={true}
                 />
-            )}
+            )}*/}
             {!searchParams.video && (
                 <>
                     <ChatMessages
@@ -91,7 +93,7 @@ const MemberIdPage = async ({
                         }}
                     />
                 </>
-            )}*/}
+            )}
         </div>
     );
 }
