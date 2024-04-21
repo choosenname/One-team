@@ -16,7 +16,7 @@ import {
 interface ServerSearchProps {
     data: {
         label: string;
-        type: "channel" | "member",
+        type: "channel" | "member" | "message",
         data: {
             icon: React.ReactNode;
             name: string;
@@ -44,7 +44,7 @@ export const ServerSearch = ({
         return () => document.removeEventListener("keydown", down)
     }, []);
 
-    const onClick = ({ id, type }: { id: string, type: "channel" | "member"}) => {
+    const onClick = ({ id, type }: { id: string, type: "channel" | "member" | "message"}) => {
         setOpen(false);
 
         if (type === "member") {
