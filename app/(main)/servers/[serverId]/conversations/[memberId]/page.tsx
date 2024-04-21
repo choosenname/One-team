@@ -60,6 +60,7 @@ const MemberIdPage = async ({
             <ChatHeader
                 imageUrl={otherMember.user.imageUrl}
                 name={otherMember.user.name}
+                channelId={conversation.id}
                 serverId={params.serverId}
                 type="conversation"
             />
