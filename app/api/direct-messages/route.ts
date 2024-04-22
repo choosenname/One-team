@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {currentUser} from "@/lib/auth";
 import {db} from "@/lib/db";
+import {pusherServer} from "@/lib/pusher";
 
 export async function POST(request: Request) {
     try {
@@ -59,6 +60,24 @@ export async function POST(request: Request) {
                     },
                 },
             },
+        });
+
+        await pusherServer.trigger(
+            conversationId,
+            "messages:new",
+            newMessage
+        );
+
+        const lastMessage =
+            updatedConversation.directMessages[
+            updatedConversation.directMessages.length - 1
+                ];
+
+        updatedConversation.users.map(user => {
+            pusherServer.trigger(user.name!, "conversation:update", {
+                id: conversationId,
+                messages: [lastMessage],
+            });
         });
 
         return NextResponse.json(newMessage);
