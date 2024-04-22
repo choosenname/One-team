@@ -9,7 +9,7 @@ export const NavigationMessages = () => {
     const router = useRouter();
 
     const onClick = () => {
-        router.push(`/servers/me`);
+        router.push(`/me`);
     }
 
     return (

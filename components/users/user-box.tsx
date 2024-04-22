@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import {Avatar} from "@/components/ui/avatar";
 import {UserAvatar} from "@/components/user-avatar";
+import {ExtendedUser} from "@/next-auth";
 
 interface UserBoxProps {
-    data: User;
+    data: ExtendedUser;
 }
 
 export const UserBox = ({ data }: UserBoxProps) => {
@@ -23,7 +22,7 @@ export const UserBox = ({ data }: UserBoxProps) => {
                 userId: data.id,
             })
             .then(response => {
-                router.push(`/conversations/${response.data.id}`);
+                router.push(`/me/conversations/${response.data.id}`);
             })
             .finally(() => {
                 setIsLoading(false);

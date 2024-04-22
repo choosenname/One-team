@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import {currentUser} from "@/lib/auth";
 
-const getConversations = async () => {
+export const getConversations = async () => {
     const user = await currentUser();
 
     if (!user?.id) {
@@ -35,7 +35,26 @@ const getConversations = async () => {
     }
 };
 
-export default getConversations;
+export const getConversationById = async (conversationId: string) => {
+    try {
+        const user = await currentUser();
+
+        if (!user?.name) return null;
+
+        const conversation = await db.conversation.findUnique({
+            where: {
+                id: conversationId,
+            },
+            include: {
+                users: true,
+            },
+        });
+
+        return conversation;
+    } catch (error) {
+        return null;
+    }
+};
 
 
 /*
