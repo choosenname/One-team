@@ -1,5 +1,5 @@
 import React from "react";
-import getUser from "@/actions/getUsers";
+import getUser from "@/lib/users";
 import {UserList} from "@/components/users/user-list";
 
 export default async function UsersLayout({

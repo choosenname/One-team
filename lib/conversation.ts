@@ -1,5 +1,44 @@
 import { db } from "@/lib/db";
+import {currentUser} from "@/lib/auth";
 
+const getConversations = async () => {
+    const user = await currentUser();
+
+    if (!user?.id) {
+        return [];
+    }
+
+    try {
+        const conversations = await db.conversation.findMany({
+            orderBy: {
+                lastMessageAt: "desc",
+            },
+            where: {
+                userIds: {
+                    has: user.id,
+                },
+            },
+            include: {
+                users: true,
+                directMessages: {
+                    include: {
+                        sender: true,
+                        seen: true,
+                    },
+                },
+            },
+        });
+
+        return conversations;
+    } catch (error) {
+        return [];
+    }
+};
+
+export default getConversations;
+
+
+/*
 export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
     let conversation = await findConversation(memberOneId, memberTwoId) || await findConversation(memberTwoId, memberOneId);
 
@@ -60,4 +99,4 @@ const createNewConversation = async (memberOneId: string, memberTwoId: string) =
     } catch {
         return null;
     }
-}
+}*/

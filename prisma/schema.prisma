@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
@@ -19,9 +19,9 @@ enum UserRole {
 }
 
 model User {
-  id       String   @id @default(uuid()) @db.Uuid
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
   name     String   @unique
-  imageUrl String   @db.Text
+  imageUrl String
   password String
   role     UserRole @default(USER)
 
@@ -31,15 +31,23 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  conversationIds String[]       @db.ObjectId
+  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]        @db.ObjectId
+  seenMessages   DirectMessage[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  messages DirectMessage[]
 }
 
 model Server {
-  id         String @id @default(uuid()) @db.Uuid
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  imageUrl   String @db.Text
+  imageUrl   String
   inviteCode String @unique
 
-  userId String @db.Uuid
+  userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   members  Member[]
@@ -58,22 +66,20 @@ enum MemberRole {
 }
 
 model Member {
-  id   String     @id @default(uuid()) @db.Uuid
+  id   String     @id @default(auto()) @map("_id") @db.ObjectId
   role MemberRole @default(GUEST)
 
-  serverId String @db.Uuid
+  serverId String @db.ObjectId
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
-  userId String @db.Uuid
+  userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  messages               Message[]
-  directMessages         DirectMessage[]
-  conversationsInitiated Conversation[]  @relation("MemberOne")
-  conversationsReceived  Conversation[]  @relation("MemberTwo")
+  messages Message[]
 
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  createdAt     DateTime        @default(now())
+  updateAt      DateTime        @updatedAt
+  DirectMessage DirectMessage[]
 
   @@index([serverId])
   @@index([userId])
@@ -85,14 +91,14 @@ enum ChannelType {
 }
 
 model Channel {
-  id   String      @id @default(uuid()) @db.Uuid
+  id   String      @id @default(auto()) @map("_id") @db.ObjectId
   name String
   type ChannelType @default(TEXT)
 
-  userId String @db.Uuid
+  userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  serverId String @db.Uuid
+  serverId String @db.ObjectId
   server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   messages Message[]
@@ -105,12 +111,12 @@ model Channel {
 }
 
 model Message {
-  id        String   @id @default(uuid()) @db.Uuid
-  content   String   @db.Text
-  fileUrl   String?  @db.Text
-  memberId  String   @db.Uuid
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  fileUrl   String?
+  memberId  String   @db.ObjectId
   member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  channelId String   @db.Uuid
+  channelId String   @db.ObjectId
   channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -121,29 +127,33 @@ model Message {
 }
 
 model Conversation {
-  id             String          @id @default(uuid()) @db.Uuid
-  memberOneId    String          @db.Uuid
-  memberOne      Member          @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
-  memberTwoId    String          @db.Uuid
-  memberTwo      Member          @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
-  directMessages DirectMessage[]
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
 
-  @@unique([memberOneId, memberTwoId])
-  @@index([memberTwoId])
+  directMessagesIds String[]        @db.ObjectId
+  directMessages    DirectMessage[]
+
+  userIds String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIds], references: [id])
 }
 
 model DirectMessage {
-  id             String       @id @default(uuid()) @db.Uuid
-  content        String       @db.Text
-  fileUrl        String?      @db.Text
-  memberId       String       @db.Uuid
-  member         Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  conversationId String       @db.Uuid
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  deleted        Boolean      @default(false)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
 
-  @@index([memberId])
-  @@index([conversationId])
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String  @db.ObjectId
+  sender   User    @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  Member   Member? @relation(fields: [memberId], references: [id])
+  memberId String? @db.ObjectId
 }
