@@ -7,6 +7,8 @@ import MessageBox from "@/components/conversation/conversation-message-box";
 import axios from "axios";
 import {pusherClient} from "@/lib/pusher";
 import {find} from "lodash";
+import {toast} from "@/components/ui/use-toast";
+import {Button} from "@/components/ui/button";
 
 interface BodyProps {
     initialMessages: FullMessageType[];
@@ -36,6 +38,7 @@ const Body= ({initialMessages}: BodyProps) => {
 
                 return [...current, message];
             });
+
 
             bntRef?.current?.scrollIntoView();
         };

@@ -68,6 +68,12 @@ export async function POST(request: Request) {
             newMessage
         );
 
+        await pusherServer.trigger(
+            'notification',
+            "notification:new",
+            newMessage
+        );
+
         const lastMessage =
             updatedConversation.directMessages[
             updatedConversation.directMessages.length - 1

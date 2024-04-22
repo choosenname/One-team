@@ -16,14 +16,14 @@ interface IMessageInputProps {
     type?: string;
 }
 
-const MessageInput: React.FC<IMessageInputProps> = ({
+const MessageInput = ({
                                                         id,
                                                         register,
                                                         errors,
                                                         required,
                                                         placeholder,
                                                         type,
-                                                    }) => {
+                                                    }: IMessageInputProps) => {
     return (
         <div className='relative w-full '>
         <input
