@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import {currentUser} from "@/lib/auth";
 import {db} from "@/lib/db";
+import {pusherServer} from "@/lib/pusher";
 
 export async function POST(request: Request) {
     try {
@@ -34,6 +35,16 @@ export async function POST(request: Request) {
                 include: {
                     users: true,
                 },
+            });
+
+            newConversation.users.forEach(user => {
+                if (user.name) {
+                    pusherServer.trigger(
+                        user.name,
+                        "conversation:new",
+                        newConversation
+                    );
+                }
             });
 
             return NextResponse.json(newConversation);
@@ -78,6 +89,16 @@ export async function POST(request: Request) {
             include: {
                 users: true,
             },
+        });
+
+        newConversation.users.map(user => {
+            if (user.name) {
+                pusherServer.trigger(
+                    user.name,
+                    "conversation:new",
+                    newConversation
+                );
+            }
         });
 
         return NextResponse.json(newConversation);
