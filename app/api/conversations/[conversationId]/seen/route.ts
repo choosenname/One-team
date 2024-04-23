@@ -7,7 +7,7 @@ interface IParams {
     conversationId?: string;
 }
 
-export async function POST(
+/*export async function POST(
     request: Request,
     { params }: { params: IParams }
 ) {
@@ -89,4 +89,4 @@ export async function POST(
         console.log(error, "ERROR_MESSAGE_SEEN");
         return new NextResponse("Internal Server Error", { status: 500 });
     }
-}
+}*/
