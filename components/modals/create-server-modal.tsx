@@ -16,6 +16,7 @@ import {useRouter} from "next/navigation";
 import {useModal} from "@/hooks/use-modal-store";
 import {useEffect, useState} from "react";
 import {Department} from "@prisma/client";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -23,7 +24,10 @@ const formSchema = z.object({
     }),
     imageUrl: z.string().min(1, {
         message: "Server image is required."
-    })
+    }),
+    departmentId: z.string().min(1, {
+        message: "Department is required."
+    }),
 });
 
 export const CreateServerModal = () => {
@@ -57,7 +61,7 @@ export const CreateServerModal = () => {
         const fetchDepartments = async () => {
             try {
                 const response = await axios.get('/api/departments');
-                setDepartments(response.data.departments);
+                setDepartments(response.data);
             } catch (error) {
                 console.log(error);
             }
@@ -123,27 +127,26 @@ export const CreateServerModal = () => {
                             <FormField
                                 control={form.control}
                                 name="departmentId"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                            Select department
-                                        </FormLabel>
+                                render={({field}) => (<FormItem>
+                                    <FormLabel
+                                        className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                        Select department
+                                    </FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
-                                            <select
-                                                {...field}
-                                                className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                            >
-                                                <option value="">Select department</option>
-                                                {departments.map((department) => (
-                                                    <option key={department.id} value={department.id}>
-                                                        {department.departament}
-                                                    </option>
-                                                ))}
-                                            </select>
+                                            <SelectTrigger className="w-[180px]">
+                                                <SelectValue placeholder="Select department"/>
+                                            </SelectTrigger>
                                         </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                        <SelectContent>
+                                            {departments.map((department) => (
+                                                <SelectItem key={department.id} value={department.id}>
+                                                    {department.department}
+                                                </SelectItem>))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage/>
+                                </FormItem>)}
                             />
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">

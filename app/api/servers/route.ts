@@ -6,7 +6,7 @@ import {MemberRole} from "@prisma/client";
 
 export async function POST(req: Request) {
     try {
-        const { name, imageUrl } = await req.json();
+        const { name, imageUrl, departmentId } = await req.json();
         const user = await currentUser();
 
         if (!user || !user.id) {
@@ -18,6 +18,7 @@ export async function POST(req: Request) {
                 userId: user.id,
                 name,
                 imageUrl,
+                departmentId,
                 inviteCode: uuidv4(),
                 channels: {
                     create: [

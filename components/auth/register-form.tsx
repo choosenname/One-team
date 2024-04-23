@@ -56,7 +56,6 @@ export const RegisterForm = () => {
         const fetchDepartments = async () => {
             try {
                 const response = await axios.get('/api/departments');
-                console.log(response);
                 setDepartments(response.data);
             } catch (error) {
                 console.log(error);

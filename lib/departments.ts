@@ -7,3 +7,15 @@ export const getDepartments = async () => {
         return [];
     }
 };
+
+export const getDepartmentById = async (id: string) => {
+    try {
+        return await db.department.findUnique({
+            where: {
+                id,
+            }
+        });
+    } catch (error) {
+        return null;
+    }
+}
