@@ -32,6 +32,7 @@ export const publicApiPrefix = [
     "/api/socket/io",
     "/api/socket/messages",
     "/api/direct-messages",
+    "/api/departments",
     "/api"
 ];
 
@@ -39,4 +40,4 @@ export const publicApiPrefix = [
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/";
+export const DEFAULT_LOGIN_REDIRECT = "/me";

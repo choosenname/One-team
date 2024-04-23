@@ -14,13 +14,13 @@ export const NavigationSidebar = async () => {
     const user = await currentUser();
 
     if (!user || !user.id) {
-        return redirect("/");
+        return redirect("/login");
     }
 
     const dbUser = await getUserById(user.id);
 
     if (!dbUser) {
-        return redirect("/");
+        return redirect("/login");
     }
 
     const servers = await db.server.findMany({

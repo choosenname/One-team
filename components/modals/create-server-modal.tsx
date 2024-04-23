@@ -14,24 +14,28 @@ import {Button} from "@/components/ui/button";
 import {FileUpload} from "@/components/files/file-upload";
 import {useRouter} from "next/navigation";
 import {useModal} from "@/hooks/use-modal-store";
+import {useEffect, useState} from "react";
+import {Department} from "@prisma/client";
 
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Server name is required."
-    }), imageUrl: z.string().min(1, {
+    }),
+    imageUrl: z.string().min(1, {
         message: "Server image is required."
     })
 });
 
 export const CreateServerModal = () => {
     const {isOpen, onClose, type} = useModal();
+    const [departments, setDepartments] = useState<Department[]>([]);
     const router = useRouter();
 
     const isModalOpen = isOpen && type === "createServer";
 
     const form = useForm({
         resolver: zodResolver(formSchema), defaultValues: {
-            name: "", imageUrl: "",
+            name: "", imageUrl: "", departmentId: ''
         }
     });
 
@@ -49,12 +53,25 @@ export const CreateServerModal = () => {
         }
     }
 
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await axios.get('/api/departments');
+                setDepartments(response.data.departments);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchDepartments();
+    }, []);
+
     const handleClose = () => {
         form.reset();
         onClose();
     }
 
-    return (<Dialog open={isModalOpen} onOpenChange={handleClose}>
+    return (
+        <Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
@@ -90,7 +107,7 @@ export const CreateServerModal = () => {
                                         <FormLabel
                                             className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                         >
-                                            Server name
+                                            Server nam
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -102,6 +119,31 @@ export const CreateServerModal = () => {
                                         </FormControl>
                                         <FormMessage/>
                                     </FormItem>)}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="departmentId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            Select department
+                                        </FormLabel>
+                                        <FormControl>
+                                            <select
+                                                {...field}
+                                                className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                                            >
+                                                <option value="">Select department</option>
+                                                {departments.map((department) => (
+                                                    <option key={department.id} value={department.id}>
+                                                        {department.departament}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
                             />
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">

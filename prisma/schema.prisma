@@ -19,10 +19,11 @@ enum UserRole {
 }
 
 model Department {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  departament String @unique
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  department String @unique
 
-  user User[]
+  users   User[]
+  servers Server[]
 }
 
 model User {
@@ -39,8 +40,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  dapartementId String     @db.ObjectId
-  dapartement   Department @relation(fields: [dapartementId], references: [id], onDelete: Cascade)
+  departmentId String     @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
 
   conversationIds String[]       @db.ObjectId
   conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
@@ -59,6 +60,9 @@ model Server {
 
   userId String @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  departmentId String     @db.ObjectId
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
 
   members  Member[]
   channels Channel[]

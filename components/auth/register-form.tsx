@@ -1,7 +1,7 @@
 "use client";
 
 import * as z from "zod";
-import { useState, useTransition } from "react";
+import {useEffect, useState, useTransition} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,10 +20,14 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Department} from "@prisma/client";
+import axios from "axios";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
+    const [departments, setDepartments] = useState<Department[]>([]);
     const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -31,6 +35,7 @@ export const RegisterForm = () => {
         defaultValues: {
             name: "",
             password: "",
+            departmentId: "",
         },
     });
 
@@ -46,6 +51,19 @@ export const RegisterForm = () => {
                 });
         });
     };
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await axios.get('/api/departments');
+                console.log(response);
+                setDepartments(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchDepartments();
+    }, []);
 
     return (
         <CardWrapper
@@ -93,6 +111,30 @@ export const RegisterForm = () => {
                                     <FormMessage />
                                 </FormItem>
                             )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="departmentId"
+                            render={({field}) => (<FormItem>
+                                <FormLabel
+                                    className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                    Select department
+                                </FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className="w-[180px]">
+                                            <SelectValue placeholder="Select department"/>
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {departments.map((department) => (
+                                            <SelectItem key={department.id} value={department.id}>
+                                                {department.department}
+                                            </SelectItem>))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage/>
+                            </FormItem>)}
                         />
                     </div>
                     <FormError message={error} />
