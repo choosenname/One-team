@@ -23,7 +23,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         return {error: "User name already in use"};
     }
 
-    await db.user.create({
+    const user= await db.user.create({
         data: {
             name,
             password: hashedPassword,
@@ -32,5 +32,5 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         }
     });
 
-    return {success: "Success"};
+    return {success: "Success", user: user};
 };

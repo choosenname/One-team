@@ -23,6 +23,7 @@ import { register } from "@/actions/register";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Department} from "@prisma/client";
 import axios from "axios";
+import {inviteUser} from "@/actions/inviteUser";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -46,8 +47,9 @@ export const RegisterForm = () => {
         startTransition(() => {
             register(values)
                 .then((data) => {
-                    setError(data.error);
                     setSuccess(data.success);
+                    setError(data.error);
+                    if(data.user) inviteUser(data.user)
                 });
         });
     };

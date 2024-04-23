@@ -34,6 +34,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
         return redirect("/");
     }
 
+    console.log("Server ID:", serverId);
     const server = await db.server.findUnique({
         where: {
             id: serverId,
