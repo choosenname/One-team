@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
-import { getOrCreateConversation } from "@/lib/conversation";
+// import { getOrCreateConversation } from "@/lib/conversation";
 import { currentUser } from "@/lib/auth";
 import { ChatHeader } from "@/components/chat/chat-header";
 import {ChatMessages} from "@/components/chat/chat-messages";
