@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import {currentUser} from "@/lib/auth";
 import {db} from "@/lib/db";
-import {pusherServer} from "@/lib/pusher";
+// import {pusherServer} from "@/lib/pusher";
 
 export async function POST(request: Request) {
     try {
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
                 },
             });
 
-            newConversation.users.forEach(user => {
+            /*newConversation.users.forEach(user => {
                 if (user.name) {
                     pusherServer.trigger(
                         user.name,
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
                         newConversation
                     );
                 }
-            });
+            });*/
 
             return NextResponse.json(newConversation);
         }
@@ -91,7 +91,7 @@ export async function POST(request: Request) {
             },
         });
 
-        newConversation.users.map(async (user) => {
+        /*newConversation.users.map(async (user) => {
             if (user.name) {
                 await pusherServer.trigger(
                     user.name,
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
                     newConversation
                 );
             }
-        });
+        });*/
 
         return NextResponse.json(newConversation);
     } catch (error) {
