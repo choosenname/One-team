@@ -8,6 +8,9 @@ import {ThemeProvider} from "@/components/providers/theme-provider";
 import {ModalProvider} from "@/components/providers/modal-provider";
 import {SocketProvider} from "@/components/providers/socket-provider";
 import {QueryProvider} from "@/components/providers/query-provider";
+import ActiveStatus from "@/components/conversation/active-status";
+import {Toaster} from "@/components/ui/toaster";
+import Notifications from "@/components/notifications";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -33,6 +36,9 @@ export default async function RootLayout({
             <SocketProvider>
                 <ModalProvider/>
                 <QueryProvider>
+                    <Toaster/>
+                    <Notifications />
+                    <ActiveStatus />
                     {children}
                 </QueryProvider>
             </SocketProvider>

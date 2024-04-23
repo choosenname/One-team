@@ -4,6 +4,7 @@ import { NextApiResponseServerIo } from "@/types";
 import { currentUserPages } from "@/lib/current-user-pages";
 import { db } from "@/lib/db";
 
+/*
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponseServerIo,
@@ -95,4 +96,4 @@ export default async function handler(
         console.log("[DIRECT_MESSAGES_POST]", error);
         return res.status(500).json({ message: "Internal Error" });
     }
-}
+}*/

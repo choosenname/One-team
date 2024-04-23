@@ -31,6 +31,7 @@ export const publicApiPrefix = [
     "/api/servers",
     "/api/socket/io",
     "/api/socket/messages",
+    "/api/direct-messages",
     "/api"
 ];
 
