@@ -7,7 +7,7 @@ interface IParams {
     conversationId?: string;
 }
 
-/*export async function POST(
+export async function POST(
     request: Request,
     { params }: { params: IParams }
 ) {
@@ -40,7 +40,7 @@ interface IParams {
 
         // find the last message
         const lastMessage =
-            conversation.directMessages[conversation.directMessages.length - 1];
+            await conversation.directMessages[await conversation.directMessages.length - 1];
 
         if (!lastMessage) {
             return NextResponse.json(conversation);
@@ -84,9 +84,9 @@ interface IParams {
             updatedMessage
         );
 
-        return NextResponse.json(updatedMessage);
+        // return NextResponse.json(updatedMessage);
     } catch (error) {
         console.log(error, "ERROR_MESSAGE_SEEN");
         return new NextResponse("Internal Server Error", { status: 500 });
     }
-}*/
+}
