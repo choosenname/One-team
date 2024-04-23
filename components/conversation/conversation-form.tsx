@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
-import useConversation from "@/hooks/use-conversation";
+import {useConversation} from "@/hooks/use-conversation";
 import axios from "axios";
 import {Send} from "lucide-react";
 import MessageInput from "@/components/conversation/conversation-message-input";
