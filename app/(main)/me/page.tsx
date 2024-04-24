@@ -1,8 +1,8 @@
 "use client"
 
 import {clsx} from "clsx";
-import useConversation from "@/hooks/use-conversation";
 import EmptyState from "@/components/conversation/empty-state";
+import {useConversation} from "@/hooks/use-conversation";
 
 const ServerMe = () => {
     const { isOpen } = useConversation();

@@ -1,9 +1,7 @@
-import {LoginButton} from "@/components/auth/login-button";
-import React from "react";
-import {InitialModal} from "@/components/modals/initial-modal";
 import {currentUser} from "@/lib/auth";
 import {db} from "@/lib/db";
 import {redirect} from "next/navigation";
+import {InitialModal} from "@/components/modals/initial-modal";
 
 export default async function Home() {
     const user = await currentUser();
@@ -21,7 +19,11 @@ export default async function Home() {
 
         if (server) {
             return redirect(`/servers/${server.id}`);
+        } else {
+            return redirect(`/me`);
         }
+    } else {
+        return redirect('/login');
     }
 
     return <InitialModal/>;

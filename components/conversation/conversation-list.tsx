@@ -8,7 +8,7 @@ import {find} from "lodash";
 import {FullConversationType} from "@/types";
 import {User} from "@prisma/client";
 import {useSession} from "next-auth/react";
-import useConversation from "@/hooks/use-conversation";
+import {useConversation} from "@/hooks/use-conversation";
 import {pusherClient} from "@/lib/pusher";
 import {Group} from "lucide-react";
 import ConversationBox from "@/components/conversation/conversation-box";

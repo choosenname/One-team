@@ -10,6 +10,7 @@ import {ServerSection} from "@/components/server/server-section";
 import {ServerChannel} from "@/components/server/server-channel";
 import {ServerMember} from "@/components/server/server-member";
 import {Separator} from "@/components/ui/separator";
+import {getDepartmentById} from "@/lib/departments";
 
 interface ServerSidebarProps {
     serverId: string;
@@ -33,6 +34,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
         return redirect("/");
     }
 
+    console.log("Server ID:", serverId);
     const server = await db.server.findUnique({
         where: {
             id: serverId,
@@ -54,14 +56,16 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
         }
     });
 
-    const textChannels = server?.channels.filter((channel) => channel.type === ChannelType.TEXT)
-    const videoChannels = server?.channels.filter((channel) => channel.type === ChannelType.VIDEO)
-    const members = server?.members.filter((member) => member.userId !== user.id)
-
     if (!server) {
         return redirect("/");
     }
 
+    const textChannels = server.channels.filter((channel) => channel.type === ChannelType.TEXT)
+    const videoChannels = server.channels.filter((channel) => channel.type === ChannelType.VIDEO)
+    const members = server?.members.filter((member) => member.userId !== user.id)
+
+
+    const serverDepartment = await getDepartmentById(server.departmentId);
     const role = server.members.find((member) => member.userId === user.id)?.role;
 
     return (
@@ -69,6 +73,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
             <ServerHeader
                 server={server}
                 role={role}
+                department={serverDepartment}
             />
             <ScrollArea className="flex-1 px-3">
                 <div className="mt-2">

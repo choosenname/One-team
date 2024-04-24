@@ -6,7 +6,7 @@ export const LoginSchema = z.object({
     }),
     password: z.string().min(1, {
         message: "Password is required",
-    }),
+    })
 });
 
 export const RegisterSchema = z.object({
@@ -15,6 +15,9 @@ export const RegisterSchema = z.object({
     }),
     password: z.string().min(6, {
         message: "Minimum 6 characters required",
+    }),
+    departmentId: z.string().min(1, {
+        message: "Department is required",
     }),
 });
 
