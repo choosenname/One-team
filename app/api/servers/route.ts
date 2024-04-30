@@ -3,7 +3,7 @@ import { currentUser } from "@/lib/auth";
 import {NextResponse} from "next/server";
 import {db} from "@/lib/db";
 import {MemberRole} from "@prisma/client";
-import {inviteServer} from "@/actions/inviteUser";
+import {inviteServer} from "@/actions/invite";
 
 export async function POST(req: Request) {
     try {

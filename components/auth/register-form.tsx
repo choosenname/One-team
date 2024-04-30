@@ -23,7 +23,7 @@ import { register } from "@/actions/register";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {Department} from "@prisma/client";
 import axios from "axios";
-import {inviteUser} from "@/actions/inviteUser";
+import {inviteUser} from "@/actions/invite";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
