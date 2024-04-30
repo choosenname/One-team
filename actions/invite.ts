@@ -14,7 +14,11 @@ export const inviteUser = async (user: User) => {
 
     const serversToUpdate = await db.server.findMany({
         where: {
-            department: department,
+            OR: [{department: department}, {
+                department: {
+                    department: 'general'
+                }
+            }]
         }
     });
 
@@ -46,7 +50,11 @@ export const inviteServer = async (server: Server) => {
 
     const usersToUpdate = await db.user.findMany({
         where: {
-            department: department,
+            OR: [{department: department}, {
+                department: {
+                    department: 'general'
+                }
+            }]
         }
     })
 
