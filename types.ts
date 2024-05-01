@@ -1,7 +1,7 @@
 import { Server as NetServer, Socket } from "net";
 import { NextApiResponse } from "next";
 import { Server as SocketIOServer } from "socket.io";
-import {Server, Member, User, Conversation, DirectMessage} from "@prisma/client"
+import {Server, Member, User, Conversation, DirectMessage, Department} from "@prisma/client"
 import {ExtendedUser} from "@/next-auth";
 
 export type ServerWithMembersWithProfiles = Server & {
@@ -38,3 +38,7 @@ export type FullConversationType = Conversation & {
     users: ExtendedUser[];
     directMessages: FullMessageType[];
 };
+
+export type FullUserType = User & {
+    department: Department;
+}
