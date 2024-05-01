@@ -42,3 +42,7 @@ export type FullConversationType = Conversation & {
 export type FullUserType = User & {
     department: Department;
 }
+
+export type FullServerType = Server & {
+    department: Department;
+}

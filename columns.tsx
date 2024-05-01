@@ -1,11 +1,11 @@
 "use client"
 
-import {Department, User} from "@prisma/client";
+import {Department, Server, User} from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table"
 import {UserAvatar} from "@/components/user-avatar";
-import {getDepartmentById} from "@/lib/departments";
+import {FullServerType, FullUserType} from "@/types";
 
-export const UserColumn: ColumnDef<User>[] = [
+export const UserColumn: ColumnDef<FullUserType>[] = [
     {
         accessorKey: "imageUrl",
         header: "Image",
@@ -23,11 +23,26 @@ export const UserColumn: ColumnDef<User>[] = [
         header: "Role",
     },
     {
-        accessorKey: "department",
+        accessorKey: "department.department",
         header: "Department",
+    },
+]
+
+export const ServerColumn: ColumnDef<FullServerType>[] = [
+    {
+        accessorKey: "imageUrl",
+        header: "Image",
         cell: ({ row }) => {
-            const department = row.getValue("department") as Department
-            return department.department
+            const imageUrl = row.getValue("imageUrl") as string
+            return <UserAvatar src={imageUrl} />
         },
+    },
+    {
+        accessorKey: "name",
+        header: "Name",
+    },
+    {
+        accessorKey: "department.department",
+        header: "Department",
     },
 ]
