@@ -28,7 +28,7 @@ export const UserButton = ({user}: UserButtonProps) => {
                 <UserAvatar src={user.imageUrl}/>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40" align="end">
-                <Button onClick={() => onOpen("editProfile", {user})}>
+                <Button variant="ghost" onClick={() => onOpen("editProfile", {user})}>
                     <DropdownMenuItem>
                         <Settings className="h-4 w-4 mr-2"/>
                         Profile
