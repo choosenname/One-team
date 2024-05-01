@@ -1,17 +1,19 @@
 import NextAuth from "next-auth";
 
 import authConfig from "@/auth.config";
-import {authRoutes, DEFAULT_LOGIN_REDIRECT, publicApiPrefix, publicRoutes,} from "@/routes";
+import {adminRoutes, authRoutes, DEFAULT_LOGIN_REDIRECT, publicApiPrefix, publicRoutes,} from "@/routes";
 
 const {auth} = NextAuth(authConfig);
 
 export default auth((req) => {
     const {nextUrl} = req;
     const isLoggedIn = !!req.auth;
+    const isAdmin = req.auth?.user.role == "ADMIN";
 
     const isPublicApiRoute = publicApiPrefix.includes(nextUrl.pathname);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
 
     if (isPublicApiRoute) {
         return;
@@ -19,6 +21,13 @@ export default auth((req) => {
 
     if (isAuthRoute) {
         if (isLoggedIn) {
+            return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+        }
+        return;
+    }
+
+    if (isAdminRoute) {
+        if (isAdmin) {
             return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
         }
         return;
