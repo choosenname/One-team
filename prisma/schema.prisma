@@ -1,124 +1,83 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMIN
-  USER
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["rhel-openssl-1.0.x"]
 }
 
 model Department {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  department String @unique
-
-  users   User[]
-  servers Server[]
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  department String   @unique
+  users      User[]   @relation(name: "DepartmentToUser")
+  servers    Server[] @relation(name: "DepartmentToServer")
 }
 
 model User {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  name     String   @unique
-  imageUrl String
-  password String
-  role     UserRole @default(USER)
-
-  servers  Server[]
-  channels Channel[]
-  members  Member[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  departmentId String     @db.ObjectId
-  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
-
-  conversationIds String[]       @db.ObjectId
-  conversations   Conversation[] @relation(fields: [conversationIds], references: [id])
-
-  seenMessageIds String[]        @db.ObjectId
-  seenMessages   DirectMessage[] @relation("Seen", fields: [seenMessageIds], references: [id])
-
-  messages DirectMessage[]
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  name            String          @unique
+  imageUrl        String
+  password        String
+  role            UserRole        @default(USER)
+  servers         Server[]        @relation(name: "ServerToUser")
+  channels        Channel[]       @relation(name: "ChannelToUser")
+  members         Member[]        @relation(name: "MemberToUser")
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  departmentId    String          @db.ObjectId
+  department      Department      @relation(name: "DepartmentToUser", fields: [departmentId], references: [id])
+  conversationIds String[]        @db.ObjectId
+  conversations   Conversation[]  @relation(name: "ConversationToUser", fields: [conversationIds], references: [id])
+  seenMessageIds  String[]        @db.ObjectId
+  seenMessages    DirectMessage[] @relation(name: "Seen", fields: [seenMessageIds], references: [id])
+  messages        DirectMessage[] @relation(name: "DirectMessageToUser")
 }
 
 model Server {
-  id         String @id @default(auto()) @map("_id") @db.ObjectId
-  name       String
-  imageUrl   String
-  inviteCode String @unique
-
-  userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  imageUrl     String
+  inviteCode   String     @unique
+  userId       String     @db.ObjectId
+  user         User       @relation(name: "ServerToUser", fields: [userId], references: [id])
   departmentId String     @db.ObjectId
-  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
-
-  members  Member[]
-  channels Channel[]
-
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  department   Department @relation(name: "DepartmentToServer", fields: [departmentId], references: [id])
+  members      Member[]   @relation(name: "MemberToServer")
+  channels     Channel[]  @relation(name: "ChannelToServer")
+  createdAt    DateTime   @default(now())
+  updateAt     DateTime   @updatedAt
 
   @@index([userId])
 }
 
-enum MemberRole {
-  ADMIN
-  MODERATOR
-  GUEST
-}
-
 model Member {
-  id   String     @id @default(auto()) @map("_id") @db.ObjectId
-  role MemberRole @default(GUEST)
-
-  serverId String @db.ObjectId
-  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
-
-  userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  messages Message[]
-
-  createdAt     DateTime        @default(now())
-  updateAt      DateTime        @updatedAt
-  DirectMessage DirectMessage[]
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  role      MemberRole @default(GUEST)
+  serverId  String     @db.ObjectId
+  server    Server     @relation(name: "MemberToServer", fields: [serverId], references: [id])
+  userId    String     @db.ObjectId
+  user      User       @relation(name: "MemberToUser", fields: [userId], references: [id])
+  messages  Message[]  @relation(name: "MemberToMessage")
+  createdAt DateTime   @default(now())
+  updateAt  DateTime   @updatedAt
 
   @@index([serverId])
   @@index([userId])
 }
 
-enum ChannelType {
-  TEXT
-  VIDEO
-}
-
 model Channel {
-  id   String      @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  type ChannelType @default(TEXT)
-
-  userId String @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  serverId String @db.ObjectId
-  server   Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
-
-  messages Message[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  type      ChannelType @default(TEXT)
+  userId    String      @db.ObjectId
+  user      User        @relation(name: "ChannelToUser", fields: [userId], references: [id])
+  serverId  String      @db.ObjectId
+  server    Server      @relation(name: "ChannelToServer", fields: [serverId], references: [id])
+  messages  Message[]   @relation(name: "ChannelToMessage")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   @@index([userId])
   @@index([serverId])
@@ -129,9 +88,9 @@ model Message {
   content   String
   fileUrl   String?
   memberId  String   @db.ObjectId
-  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  member    Member   @relation(name: "MemberToMessage", fields: [memberId], references: [id])
   channelId String   @db.ObjectId
-  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  channel   Channel  @relation(name: "ChannelToMessage", fields: [channelId], references: [id])
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -141,33 +100,42 @@ model Message {
 }
 
 model Conversation {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt     DateTime @default(now())
-  lastMessageAt DateTime @default(now())
-  name          String?
-  isGroup       Boolean?
-
+  id                String          @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt         DateTime        @default(now())
+  lastMessageAt     DateTime        @default(now())
+  name              String?
+  isGroup           Boolean?
   directMessagesIds String[]        @db.ObjectId
-  directMessages    DirectMessage[]
-
-  userIds String[] @db.ObjectId
-  users   User[]   @relation(fields: [userIds], references: [id])
+  directMessages    DirectMessage[] @relation(name: "ConversationToDirectMessage")
+  userIds           String[]        @db.ObjectId
+  users             User[]          @relation(name: "ConversationToUser", fields: [userIds], references: [id])
 }
 
 model DirectMessage {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  body      String?
-  image     String?
-  createdAt DateTime @default(now())
-
-  seenIds String[] @db.ObjectId
-  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
-
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  body           String?
+  image          String?
+  createdAt      DateTime     @default(now())
+  seenIds        String[]     @db.ObjectId
+  seen           User[]       @relation(name: "Seen", fields: [seenIds], references: [id])
   conversationId String       @db.ObjectId
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(name: "ConversationToDirectMessage", fields: [conversationId], references: [id])
+  senderId       String       @db.ObjectId
+  sender         User         @relation(name: "DirectMessageToUser", fields: [senderId], references: [id])
+}
 
-  senderId String  @db.ObjectId
-  sender   User    @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  Member   Member? @relation(fields: [memberId], references: [id])
-  memberId String? @db.ObjectId
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum MemberRole {
+  ADMIN
+  MODERATOR
+  GUEST
+}
+
+enum ChannelType {
+  TEXT
+  VIDEO
 }
