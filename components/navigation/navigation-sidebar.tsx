@@ -9,6 +9,7 @@ import {ModeToggle} from "@/components/mode-toggle";
 import {UserButton} from "@/components/auth/user-button";
 import {getUserById} from "@/data/user";
 import {NavigationMessages} from "@/components/navigation/navigation-messages";
+import {NavigationAdmin} from "@/components/navigation/navigation-admin";
 
 export const NavigationSidebar = async () => {
     const user = await currentUser();
@@ -37,7 +38,12 @@ export const NavigationSidebar = async () => {
         <div
             className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] bg-[#E3E5E8] py-3"
         >
-            <NavigationAction/>
+            {user.role === "ADMIN" && (
+                <>
+                <NavigationAction/>
+                <NavigationAdmin />
+                </>
+            )}
             <NavigationMessages />
             <Separator
                 className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto"

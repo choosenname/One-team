@@ -1,15 +1,14 @@
 "use client"
 
 import {ActionTooltip} from "@/components/action-tooltip";
-import {MessageCircleMore} from "lucide-react";
-import {useModal} from "@/hooks/use-modal-store";
+import {ShieldBan} from "lucide-react";
 import {useRouter} from "next/navigation";
 
-export const NavigationMessages = () => {
+export const NavigationAdmin = () => {
     const router = useRouter();
 
     const onClick = () => {
-        router.push(`/me`);
+        router.push(`/admin`);
     }
 
     return (
@@ -17,7 +16,7 @@ export const NavigationMessages = () => {
             <ActionTooltip
                 side="right"
                 align="center"
-                label="Me"
+                label="Admin panel"
             >
                 <button
                     onClick={onClick}
@@ -25,7 +24,7 @@ export const NavigationMessages = () => {
                 >
                     <div
                         className="flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden items-center justify-center bg-background dark:bg-neutral-700 group-hover:bg-emerald-500">
-                        <MessageCircleMore
+                        <ShieldBan
                             className="group-hover:text-white transition text-emerald-500"
                             size={25}
                         />
