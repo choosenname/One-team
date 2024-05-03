@@ -1,4 +1,4 @@
-import {redirect} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 
 import {currentUser} from "@/lib/auth";
 import {ChatHeader} from "@/components/chat/chat-header";
@@ -10,7 +10,9 @@ import {MediaRoom} from "@/components/media-room";
 
 interface ChannelIdPageProps {
     params: {
-        serverId: string; channelId: string;
+        serverId: string;
+        channelId: string;
+        messageId?: string;
     }
 }
 
@@ -60,6 +62,7 @@ const ChannelIdPage = async ({
                         }}
                         paramKey="channelId"
                         paramValue={channel.id}
+                        messageId={params.messageId}
                     />
                     <ChatInput
                         name={channel.name}

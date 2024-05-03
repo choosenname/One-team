@@ -12,6 +12,7 @@ import {
     CommandItem,
     CommandList
 } from "@/components/ui/command";
+import {channel} from "node:diagnostics_channel";
 
 interface ServerSearchProps {
     data: {
@@ -21,6 +22,7 @@ interface ServerSearchProps {
             icon: React.ReactNode;
             name: string;
             id: string;
+            sub_id?: string;
         }[] | undefined
     }[]
 }
@@ -44,7 +46,7 @@ export const ServerSearch = ({
         return () => document.removeEventListener("keydown", down)
     }, []);
 
-    const onClick = ({ id, type }: { id: string, type: "channel" | "member" | "message"}) => {
+    const onClick = ({ id, type, sub_id }: { id: string, type: "channel" | "member" | "message", sub_id?: string}) => {
         setOpen(false);
 
         if (type === "member") {
@@ -53,6 +55,10 @@ export const ServerSearch = ({
 
         if (type === "channel") {
             return router.push(`/servers/${params?.serverId}/channels/${id}`)
+        }
+
+        if (type === "message" && sub_id) {
+            return router.push(`/servers/${params?.serverId}/channels/${sub_id}/${id}`)
         }
     }
 
@@ -71,7 +77,7 @@ export const ServerSearch = ({
                 <kbd
                     className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-auto"
                 >
-                    <span className="text-xs">⌘</span>K
+                    <span className="text-xs">ctrl+</span>K
                 </kbd>
             </button>
             <CommandDialog open={open} onOpenChange={setOpen}>
@@ -85,9 +91,9 @@ export const ServerSearch = ({
 
                         return (
                             <CommandGroup key={label} heading={label}>
-                                {data?.map(({ id, icon, name }) => {
+                                {data?.map(({ id, icon, name, sub_id}) => {
                                     return (
-                                        <CommandItem key={id} onSelect={() => onClick({ id, type })}>
+                                        <CommandItem key={id} onSelect={() => onClick({ id, type, sub_id })}>
                                             {icon}
                                             <span>{name}</span>
                                         </CommandItem>

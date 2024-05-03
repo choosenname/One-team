@@ -48,7 +48,7 @@ export const ChatHeader = async ({
                 <ServerSearch
                     data={[{
                         label: "Messages", type: "message", data: messages?.map((message) => ({
-                            id: message.id, name: message.content, icon: !!message.fileUrl,
+                            id: message.id, name: message.content, icon: !!message.fileUrl, sub_id: channelId,
                         }))
                     },]}
                 />
