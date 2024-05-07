@@ -14,6 +14,7 @@ interface ChatWrapperProps {
 
 export const ChatWrapper = ({channel, member}: ChatWrapperProps) => {
     const [selectedDate, setSelectedDate] = useState<Date>();
+    const [searchMessage, setSearchMessage] = useState<string>();
 
     return(
         <>
@@ -23,6 +24,8 @@ export const ChatWrapper = ({channel, member}: ChatWrapperProps) => {
                 type="channel"
                 date={selectedDate}
                 setDate={setSelectedDate}
+                searchMessage={searchMessage}
+                setSearchMessage={setSearchMessage}
             />
             {channel.type === ChannelType.TEXT && (
                 <>
@@ -39,6 +42,7 @@ export const ChatWrapper = ({channel, member}: ChatWrapperProps) => {
                         paramKey="channelId"
                         paramValue={channel.id}
                         selectedDate={selectedDate}
+                        searchMessage={searchMessage}
                     />
                     <ChatInput
                         name={channel.name}

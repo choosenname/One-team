@@ -1,20 +1,12 @@
-import {redirect, useRouter} from "next/navigation";
-
+import {redirect} from "next/navigation";
 import {currentUser} from "@/lib/auth";
-import {ChatHeader} from "@/components/chat/chat-header";
 import {db} from "@/lib/db";
-import {ChatInput} from "@/components/chat/chat-input";
-import {ChatMessages} from "@/components/chat/chat-messages";
-import {ChannelType} from "@prisma/client";
-import {MediaRoom} from "@/components/media-room";
 import {ChatWrapper} from "@/components/chat/chat-wrapper";
 
 interface ChannelIdPageProps {
     params: {
         serverId: string;
         channelId: string;
-        messageId?: string;
-        date?: string
     }
 }
 

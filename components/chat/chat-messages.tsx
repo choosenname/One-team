@@ -1,7 +1,7 @@
 "use client";
 
 import {ElementRef, Fragment, useRef} from "react";
-import {format, parseISO} from "date-fns";
+import {format} from "date-fns";
 import {Member, Message, User} from "@prisma/client";
 import {Loader2, ServerCrash} from "lucide-react";
 
@@ -30,7 +30,8 @@ interface ChatMessagesProps {
     paramKey: "channelId" | "conversationId";
     paramValue: string;
     type: "channel" | "conversation";
-    selectedDate: Date|undefined;
+    selectedDate: Date | undefined;
+    searchMessage: string | undefined;
 }
 
 export const ChatMessages = ({
@@ -43,7 +44,8 @@ export const ChatMessages = ({
                                  paramKey,
                                  paramValue,
                                  type,
-                                 selectedDate
+                                 selectedDate,
+                                 searchMessage,
                              }: ChatMessagesProps) => {
     const queryKey = `chat:${chatId}`;
     const addKey = `chat:${chatId}:messages`;
@@ -102,23 +104,24 @@ export const ChatMessages = ({
             {data?.pages?.map((group, i) => (<Fragment key={i}>
                 {group.items
                     .filter((message: MessageWithMemberWithProfile) => {
+                        return !searchMessage || message.content.includes(searchMessage)
+                    })
+                    .filter((message: MessageWithMemberWithProfile) => {
                         return !selectedDate || new Date(message.createdAt).getDate() === selectedDate.getDate();
                     })
-                    .map((message: MessageWithMemberWithProfile) => (
-                            <ChatItem
-                                key={message.id}
-                                id={message.id}
-                                currentMember={member}
-                                member={message.member}
-                                content={message.content}
-                                fileUrl={message.fileUrl}
-                                deleted={message.deleted}
-                                timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
-                                isUpdated={message.updatedAt !== message.createdAt}
-                                socketUrl={socketUrl}
-                                socketQuery={socketQuery}
-                            />
-                        ))}
+                    .map((message: MessageWithMemberWithProfile) => (<ChatItem
+                            key={message.id}
+                            id={message.id}
+                            currentMember={member}
+                            member={message.member}
+                            content={message.content}
+                            fileUrl={message.fileUrl}
+                            deleted={message.deleted}
+                            timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
+                            isUpdated={message.updatedAt !== message.createdAt}
+                            socketUrl={socketUrl}
+                            socketQuery={socketQuery}
+                        />))}
             </Fragment>))}
         </div>
         <div ref={bottomRef}/>
