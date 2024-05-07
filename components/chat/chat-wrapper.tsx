@@ -1,50 +1,31 @@
-import {redirect} from "next/navigation";
+"use client"
 
-import {currentUser} from "@/lib/auth";
+import {Channel, ChannelType, Member} from "@prisma/client";
 import {ChatHeader} from "@/components/chat/chat-header";
-import {db} from "@/lib/db";
-import {ChatInput} from "@/components/chat/chat-input";
 import {ChatMessages} from "@/components/chat/chat-messages";
-import {ChannelType} from "@prisma/client";
+import {ChatInput} from "@/components/chat/chat-input";
 import {MediaRoom} from "@/components/media-room";
+import {useState} from "react";
 
-interface ChannelIdPageProps {
-    params: {
-        serverId: string; channelId: string;
-    }
+interface ChatWrapperProps {
+    channel: Channel;
+    member: Member;
 }
 
-const ChannelIdPage = async ({
-                                 params
-                             }: ChannelIdPageProps) => {
-    const user = await currentUser();
+export const ChatWrapper = ({channel, member}: ChatWrapperProps) => {
+    const [selectedDate, setSelectedDate] = useState<Date>();
+    const [searchMessage, setSearchMessage] = useState<string>();
 
-    if (!user) {
-        return ("/login");
-    }
-
-    const channel = await db.channel.findUnique({
-        where: {
-            id: params.channelId,
-        },
-    });
-
-    const member = await db.member.findFirst({
-        where: {
-            serverId: params.serverId, userId: user.id,
-        }
-    });
-
-    if (!channel || !member) {
-        redirect("/");
-    }
-
-    return (<div className="bg-white dark:bg-[#313338] flex flex-col h-full">
+    return(
+        <>
             <ChatHeader
                 name={channel.name}
-                channelId={channel.id}
                 serverId={channel.serverId}
                 type="channel"
+                date={selectedDate}
+                setDate={setSelectedDate}
+                searchMessage={searchMessage}
+                setSearchMessage={setSearchMessage}
             />
             {channel.type === ChannelType.TEXT && (
                 <>
@@ -60,6 +41,8 @@ const ChannelIdPage = async ({
                         }}
                         paramKey="channelId"
                         paramValue={channel.id}
+                        selectedDate={selectedDate}
+                        searchMessage={searchMessage}
                     />
                     <ChatInput
                         name={channel.name}
@@ -72,11 +55,10 @@ const ChannelIdPage = async ({
                 </>
             )}
             {channel.type === ChannelType.VIDEO && (<MediaRoom
-                    chatId={channel.id}
-                    video={true}
-                    audio={true}
-                />)}
-        </div>);
+                chatId={channel.id}
+                video={true}
+                audio={true}
+            />)}
+        </>
+    )
 }
-
-export default ChannelIdPage;

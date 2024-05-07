@@ -8,7 +8,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Member, MemberRole, User} from "@prisma/client";
 import {Edit, FileIcon, ShieldAlert, ShieldCheck, Trash} from "lucide-react";
 import Image from "next/image";
-import {useEffect, useState} from "react";
+import {ForwardedRef, RefObject, useEffect, useState} from "react";
 
 import {UserAvatar} from "@/components/user-avatar";
 import {ActionTooltip} from "@/components/action-tooltip";
@@ -36,6 +36,7 @@ interface ChatItemProps {
     isUpdated: boolean;
     socketUrl: string;
     socketQuery: Record<string, string>;
+    ref?: ForwardedRef<HTMLDivElement> | null;
 }
 
 const roleIconMap = {
@@ -58,7 +59,8 @@ export const ChatItem = ({
                              currentMember,
                              isUpdated,
                              socketUrl,
-                             socketQuery
+                             socketQuery,
+                             ref
                          }: ChatItemProps) => {
     const [isEditing, setIsEditing] = useState(false);
     const { onOpen } = useModal();
@@ -130,7 +132,7 @@ export const ChatItem = ({
             ? ![...imageExtensions, ...videoExtensions, ...audioExtensions, "pdf"].includes(fileType as FileType) : false)
         && fileUrl;
 
-    return (<div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
+    return (<div ref={ref} className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
             <div className="group flex gap-x-2 items-start w-full">
                 <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
                     <UserAvatar src={member.user.imageUrl}/>
