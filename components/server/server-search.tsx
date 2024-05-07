@@ -12,12 +12,11 @@ import {
     CommandItem,
     CommandList
 } from "@/components/ui/command";
-import {channel} from "node:diagnostics_channel";
 
 interface ServerSearchProps {
     data: {
         label: string;
-        type: "channel" | "member" | "message",
+        type: "channel" | "member",
         data: {
             icon: React.ReactNode;
             name: string;
@@ -46,7 +45,7 @@ export const ServerSearch = ({
         return () => document.removeEventListener("keydown", down)
     }, []);
 
-    const onClick = ({ id, type, sub_id }: { id: string, type: "channel" | "member" | "message", sub_id?: string}) => {
+    const onClick = ({ id, type}: { id: string, type: "channel" | "member" | "message", sub_id?: string}) => {
         setOpen(false);
 
         if (type === "member") {
@@ -55,10 +54,6 @@ export const ServerSearch = ({
 
         if (type === "channel") {
             return router.push(`/servers/${params?.serverId}/channels/${id}`)
-        }
-
-        if (type === "message" && sub_id) {
-            return router.push(`/servers/${params?.serverId}/channels/${sub_id}/${id}`)
         }
     }
 
@@ -91,9 +86,9 @@ export const ServerSearch = ({
 
                         return (
                             <CommandGroup key={label} heading={label}>
-                                {data?.map(({ id, icon, name, sub_id}) => {
+                                {data?.map(({ id, icon, name}) => {
                                     return (
-                                        <CommandItem key={id} onSelect={() => onClick({ id, type, sub_id })}>
+                                        <CommandItem key={id} onSelect={() => onClick({ id, type})}>
                                             {icon}
                                             <span>{name}</span>
                                         </CommandItem>
