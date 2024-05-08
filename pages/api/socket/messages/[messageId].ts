@@ -220,6 +220,28 @@ async function updateMessages(req: NextApiRequest, res: NextApiResponseServerIo)
             })
         }
 
+        if (req.method === "PATCH") {
+            if (!isMessageOwner) {
+                return res.status(401).json({ error: "Unauthorized" });
+            }
+
+            message = await db.message.update({
+                where: {
+                    id: messageId as string,
+                },
+                data: {
+                    content,
+                },
+                include: {
+                    member: {
+                        include: {
+                            user: true,
+                        }
+                    }
+                }
+            })
+        }
+
         const updateKey = `chat:${channelId}:messages:update`;
 
         res?.socket?.server?.io?.emit(updateKey, message);
