@@ -153,7 +153,7 @@ export const ChatItem = ({
               {timestamp}
             </span>
                 </div>
-                {sourceMessageMember && (
+                {sourceMessageMember && !deleted && (
                 <span className="text-xs text-zinc-500 dark:text-zinc-400">
                     forwarded from:&nbsp;
                     {sourceMessageMember?.user.name}
