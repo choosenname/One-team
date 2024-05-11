@@ -43,7 +43,6 @@ export const ForwardMessageModal = () => {
             try {
                 const servers = await axios.get('/api/servers/text-channels');
                 setServersWithChannels(servers.data);
-                console.log("Servers", servers);
             } catch (error) {
                 console.error('Error fetching servers with channels:', error);
             }
