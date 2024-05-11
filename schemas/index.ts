@@ -41,3 +41,9 @@ export const ServerSchema = z.object({
         message: "Server image is required."
     })
 });
+
+export const ForwardMessageSchema = z.object({
+    forwardChannelId: z.string().min(1, {
+        message: "Channel is required."
+    })
+});

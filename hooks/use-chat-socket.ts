@@ -3,17 +3,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Member, Message, User } from "@prisma/client";
 
 import { useSocket } from "@/components/providers/socket-provider";
+import {MessageWithMemberWithProfile} from "@/types";
 
 type ChatSocketProps = {
     addKey: string;
     updateKey: string;
     queryKey: string;
-}
-
-type MessageWithMemberWithProfile = Message & {
-    member: Member & {
-        user: User;
-    }
 }
 
 export const useChatSocket = ({

@@ -14,6 +14,7 @@ import {EditChannelModal} from "@/components/modals/edit-channel-modal";
 import {MessageFileModal} from "@/components/modals/message-file-modal";
 import {DeleteMessageModal} from "@/components/modals/delete-message-modal";
 import {EditProfileModal} from "@/components/modals/edit-profile-modal";
+import {ForwardMessageModal} from "@/components/modals/forward-message-modal";
 
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -40,6 +41,7 @@ export const ModalProvider = () => {
             <MessageFileModal />
             <DeleteMessageModal />
             <EditProfileModal />
+            <ForwardMessageModal/>
         </>
     )
 }

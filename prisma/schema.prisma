@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["rhel-openssl-1.0.x"]
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 model Department {
@@ -84,16 +84,19 @@ model Channel {
 }
 
 model Message {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  content   String
-  fileUrl   String?
-  memberId  String   @db.ObjectId
-  member    Member   @relation(name: "MemberToMessage", fields: [memberId], references: [id])
-  channelId String   @db.ObjectId
-  channel   Channel  @relation(name: "ChannelToMessage", fields: [channelId], references: [id])
-  deleted   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  content         String
+  fileUrl         String?
+  sourceMessageId String?   @db.ObjectId
+  sourceMessage   Message?  @relation(name: "MessageToSourceMessage", fields: [sourceMessageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  reply           Message[] @relation("MessageToSourceMessage")
+  memberId        String    @db.ObjectId
+  member          Member    @relation(name: "MemberToMessage", fields: [memberId], references: [id])
+  channelId       String    @db.ObjectId
+  channel         Channel   @relation(name: "ChannelToMessage", fields: [channelId], references: [id])
+  deleted         Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@index([channelId])
   @@index([memberId])
