@@ -31,7 +31,9 @@ interface ChatItemProps {
     };
     timestamp: string;
     fileUrl: string | null;
-    source: string | null;
+    sourceMessageMember: Member & {
+        user: User;
+    } | null;
     deleted: boolean;
     currentMember: Member;
     isUpdated: boolean;
@@ -56,7 +58,7 @@ export const ChatItem = ({
                              member,
                              timestamp,
                              fileUrl,
-                             source,
+                             sourceMessageMember,
                              deleted,
                              currentMember,
                              isUpdated,
@@ -65,7 +67,7 @@ export const ChatItem = ({
                              ref,
                          }: ChatItemProps) => {
     const [isEditing, setIsEditing] = useState(false);
-    const { onOpen } = useModal();
+    const {onOpen} = useModal();
     const params = useParams();
     const router = useRouter();
 
@@ -148,9 +150,15 @@ export const ChatItem = ({
                         </ActionTooltip>
                     </div>
                     <span className="text-xs text-zinc-500 dark:text-zinc-400">
-              {timestamp}{source}
+              {timestamp}
             </span>
                 </div>
+                {sourceMessageMember && (
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                    forwarded from:&nbsp;
+                    {sourceMessageMember?.user.name}
+                </span>
+                )}
                 {isImage && (<a
                     href={fileUrl}
                     target="_blank"

@@ -17,7 +17,11 @@ const DATE_FORMAT = "d MMM yyyy, HH:mm";
 type MessageWithMemberWithProfile = Message & {
     member: Member & {
         user: User
-    }
+    },
+    sourceMessage: Message & {
+        member: Member & {
+        user: User
+    }},
 }
 
 interface ChatMessagesProps {
@@ -114,9 +118,9 @@ export const ChatMessages = ({
                             id={message.id}
                             currentMember={member}
                             member={message.member}
+                            sourceMessageMember={message.sourceMessage?.member}
                             content={message.content}
                             fileUrl={message.fileUrl}
-                            source={message.sourceMessageId}
                             deleted={message.deleted}
                             timestamp={format(new Date(message.createdAt), DATE_FORMAT)}
                             isUpdated={message.updatedAt !== message.createdAt}

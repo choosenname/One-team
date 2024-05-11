@@ -23,7 +23,7 @@ export default async function handler(
 async function relayMessages(req: NextApiRequest, res: NextApiResponseServerIo) {
     try {
         const user = await currentUserPages(req, res);
-        const { relayServerId, relayChannelId } = req.body;
+        const { forwardChannelId } = req.body;
         const { messageId, serverId, channelId } = req.query;
 
         if (!user) {
@@ -35,14 +35,6 @@ async function relayMessages(req: NextApiRequest, res: NextApiResponseServerIo) 
         }
 
         if (!channelId) {
-            return res.status(400).json({ error: "Channel ID missing" });
-        }
-
-        if (!relayServerId) {
-            return res.status(400).json({ error: "Server ID missing" });
-        }
-
-        if (!relayChannelId) {
             return res.status(400).json({ error: "Channel ID missing" });
         }
 
@@ -97,7 +89,7 @@ async function relayMessages(req: NextApiRequest, res: NextApiResponseServerIo) 
                 content: sourceMessage.content,
                 fileUrl: sourceMessage.fileUrl,
                 sourceMessageId: sourceMessage.id,
-                channelId: channelId as string,
+                channelId: forwardChannelId as string,
                 memberId: sourceMember.id,
             },
             include: {
@@ -109,7 +101,7 @@ async function relayMessages(req: NextApiRequest, res: NextApiResponseServerIo) 
             }
         });
 
-        const channelKey = `chat:${channelId}:messages`;
+        const channelKey = `chat:${forwardChannelId}:messages`;
 
         res?.socket?.server?.io?.emit(channelKey, message);
 
