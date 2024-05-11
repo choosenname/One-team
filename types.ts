@@ -1,7 +1,7 @@
-import { Server as NetServer, Socket } from "net";
-import { NextApiResponse } from "next";
-import { Server as SocketIOServer } from "socket.io";
-import {Server, Member, User, Conversation, DirectMessage, Department, Channel} from "@prisma/client"
+import {Server as NetServer, Socket} from "net";
+import {NextApiResponse} from "next";
+import {Server as SocketIOServer} from "socket.io";
+import {Channel, Conversation, Department, DirectMessage, Member, Message, Server, User} from "@prisma/client"
 import {ExtendedUser} from "@/next-auth";
 
 export type ServerWithMembersWithProfiles = Server & {
@@ -30,13 +30,11 @@ type FileType = ImageType | VideoType | AudioType | "pdf" | "other";
 
 
 export type FullMessageType = DirectMessage & {
-    sender: ExtendedUser;
-    seen: ExtendedUser[];
+    sender: ExtendedUser; seen: ExtendedUser[];
 };
 
 export type FullConversationType = Conversation & {
-    users: ExtendedUser[];
-    directMessages: FullMessageType[];
+    users: ExtendedUser[]; directMessages: FullMessageType[];
 };
 
 export type FullUserType = User & {
@@ -50,3 +48,13 @@ export type FullServerType = Server & {
 export type ServersWithChannels = (Server & {
     channels: Channel[];
 })[]
+
+export type MessageWithMemberWithProfile = Message & {
+    member: Member & {
+        user: User
+    }, sourceMessage: Message & {
+        member: Member & {
+            user: User
+        }
+    },
+}

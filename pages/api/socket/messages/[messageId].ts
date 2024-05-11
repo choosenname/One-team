@@ -97,8 +97,17 @@ async function relayMessages(req: NextApiRequest, res: NextApiResponseServerIo) 
                     include: {
                         user: true,
                     }
+                },
+                sourceMessage: {
+                    include: {
+                        member: {
+                            include: {
+                                user: true,
+                            }
+                        }
+                    }
                 }
-            }
+            },
         });
 
         const channelKey = `chat:${forwardChannelId}:messages`;
