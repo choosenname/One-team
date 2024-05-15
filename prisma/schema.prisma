@@ -53,15 +53,19 @@ model Server {
 }
 
 model Member {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  role      MemberRole @default(GUEST)
-  serverId  String     @db.ObjectId
-  server    Server     @relation(name: "MemberToServer", fields: [serverId], references: [id])
-  userId    String     @db.ObjectId
-  user      User       @relation(name: "MemberToUser", fields: [userId], references: [id])
-  messages  Message[]  @relation(name: "MemberToMessage")
-  createdAt DateTime   @default(now())
-  updateAt  DateTime   @updatedAt
+  id                     String             @id @default(auto()) @map("_id") @db.ObjectId
+  role                   MemberRole         @default(GUEST)
+  serverId               String             @db.ObjectId
+  server                 Server             @relation(name: "MemberToServer", fields: [serverId], references: [id])
+  userId                 String             @db.ObjectId
+  user                   User               @relation(name: "MemberToUser", fields: [userId], references: [id])
+  messages               Message[]          @relation(name: "MemberToMessage")
+  createdAt              DateTime           @default(now())
+  updateAt               DateTime           @updatedAt
+  memberOneConversations ConversationTwo[]  @relation("MemberOne")
+  memberTwoConversations ConversationTwo[]  @relation("MemberTwo")
+  ConversationTwo        ConversationTwo[]
+  DirectMessageTwo       DirectMessageTwo[]
 
   @@index([serverId])
   @@index([userId])
@@ -103,15 +107,48 @@ model Message {
 }
 
 model Conversation {
-  id                String          @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt         DateTime        @default(now())
-  lastMessageAt     DateTime        @default(now())
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt         DateTime           @default(now())
+  lastMessageAt     DateTime           @default(now())
   name              String?
   isGroup           Boolean?
-  directMessagesIds String[]        @db.ObjectId
-  directMessages    DirectMessage[] @relation(name: "ConversationToDirectMessage")
-  userIds           String[]        @db.ObjectId
-  users             User[]          @relation(name: "ConversationToUser", fields: [userIds], references: [id])
+  directMessagesIds String[]           @db.ObjectId
+  directMessages    DirectMessage[]    @relation(name: "ConversationToDirectMessage")
+  userIds           String[]           @db.ObjectId
+  users             User[]             @relation(name: "ConversationToUser", fields: [userIds], references: [id])
+  DirectMessageTwo  DirectMessageTwo[]
+}
+
+model ConversationTwo {
+  id             String             @id @default(auto()) @map("_id") @db.ObjectId
+  memberOneId    String             @db.ObjectId
+  memberOne      Member             @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+  memberTwoId    String             @db.ObjectId
+  memberTwo      Member             @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  directMessages DirectMessageTwo[]
+  Member         Member?            @relation(fields: [memberId], references: [id])
+  memberId       String?            @db.ObjectId
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
+}
+
+model DirectMessageTwo {
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
+  content           String
+  fileUrl           String?
+  memberId          String           @db.ObjectId
+  member            Member           @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  conversationId    String           @db.ObjectId
+  conversation      Conversation     @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  deleted           Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  ConversationTwo   ConversationTwo? @relation(fields: [conversationTwoId], references: [id])
+  conversationTwoId String?          @db.ObjectId
+
+  @@index([memberId])
+  @@index([conversationId])
 }
 
 model DirectMessage {

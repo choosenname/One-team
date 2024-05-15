@@ -57,7 +57,6 @@ export const getConversationById = async (conversationId: string) => {
 };
 
 
-/*
 export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
     let conversation = await findConversation(memberOneId, memberTwoId) || await findConversation(memberTwoId, memberOneId);
 
@@ -70,7 +69,7 @@ export const getOrCreateConversation = async (memberOneId: string, memberTwoId: 
 
 const findConversation = async (memberOneId: string, memberTwoId: string) => {
     try {
-        return await db.conversation.findFirst({
+        return await db.conversationTwo.findFirst({
             where: {
                 AND: [
                     { memberOneId: memberOneId },
@@ -97,7 +96,7 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
 
 const createNewConversation = async (memberOneId: string, memberTwoId: string) => {
     try {
-        return await db.conversation.create({
+        return await db.conversationTwo.create({
             data: {
                 memberOneId,
                 memberTwoId,
@@ -118,4 +117,4 @@ const createNewConversation = async (memberOneId: string, memberTwoId: string) =
     } catch {
         return null;
     }
-}*/
+}

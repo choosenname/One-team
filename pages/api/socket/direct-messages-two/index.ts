@@ -4,7 +4,7 @@ import { NextApiResponseServerIo } from "@/types";
 import { currentUserPages } from "@/lib/current-user-pages";
 import { db } from "@/lib/db";
 
-/*
+
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponseServerIo,
@@ -31,7 +31,7 @@ export default async function handler(
         }
 
 
-        const conversation = await db.conversation.findFirst({
+        const conversation = await db.conversationTwo.findFirst({
             where: {
                 id: conversationId as string,
                 OR: [
@@ -71,7 +71,7 @@ export default async function handler(
             return res.status(404).json({ message: "Member not found" });
         }
 
-        const message = await db.directMessage.create({
+        const message = await db.directMessageTwo.create({
             data: {
                 content,
                 fileUrl,
@@ -96,4 +96,4 @@ export default async function handler(
         console.log("[DIRECT_MESSAGES_POST]", error);
         return res.status(500).json({ message: "Internal Error" });
     }
-}*/
+}
