@@ -1,16 +1,16 @@
-import {currentUser} from "@/lib/auth";
-import {redirect} from "next/navigation";
-import {db} from "@/lib/db";
-import {ServerHeader} from "@/components/server/server-header";
+import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { ServerHeader } from "@/components/server/server-header";
 import { Hash, ShieldAlert, ShieldCheck, Video } from "lucide-react";
 import { ChannelType, MemberRole } from "@prisma/client";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ServerSearch } from "@/components/server/server-search";
-import {ServerSection} from "@/components/server/server-section";
-import {ServerChannel} from "@/components/server/server-channel";
-import {ServerMember} from "@/components/server/server-member";
-import {Separator} from "@/components/ui/separator";
-import {getDepartmentById} from "@/lib/departments";
+import { ServerSection } from "@/components/server/server-section";
+import { ServerChannel } from "@/components/server/server-channel";
+import { ServerMember } from "@/components/server/server-member";
+import { Separator } from "@/components/ui/separator";
+import { getDepartmentById } from "@/lib/departments";
 
 interface ServerSidebarProps {
     serverId: string;
@@ -27,14 +27,14 @@ const roleIconMap = {
     [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />
 }
 
-export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
+export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     const user = await currentUser();
 
     if (!user) {
         return redirect("/");
     }
 
-    console.log("Server ID:", serverId);
+    console.log("ID сервера:", serverId);
     const server = await db.server.findUnique({
         where: {
             id: serverId,
@@ -80,7 +80,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                     <ServerSearch
                         data={[
                             {
-                                label: "Text Channels",
+                                label: "Текстовые каналы",
                                 type: "channel",
                                 data: textChannels?.map((channel) => ({
                                     id: channel.id,
@@ -89,7 +89,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                                 }))
                             },
                             {
-                                label: "Video Channels",
+                                label: "Видео каналы",
                                 type: "channel",
                                 data: videoChannels?.map((channel) => ({
                                     id: channel.id,
@@ -98,7 +98,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                                 }))
                             },
                             {
-                                label: "Members",
+                                label: "Участники",
                                 type: "member",
                                 data: members?.map((member) => ({
                                     id: member.id,
@@ -116,7 +116,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                             sectionType="channels"
                             channelType={ChannelType.TEXT}
                             role={role}
-                            label="Text Channels"
+                            label="Текстовые каналы"
                         />
                         <div className="space-y-[2px]">
                             {textChannels.map((channel) => (
@@ -136,7 +136,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                             sectionType="channels"
                             channelType={ChannelType.VIDEO}
                             role={role}
-                            label="Video Channels"
+                            label="Видео каналы"
                         />
                         <div className="space-y-[2px]">
                             {videoChannels.map((channel) => (
@@ -155,7 +155,7 @@ export const ServerSidebar = async ({serverId}: ServerSidebarProps) => {
                         <ServerSection
                             sectionType="members"
                             role={role}
-                            label="Members"
+                            label="Участники"
                             server={server}
                         />
                         <div className="space-y-[2px]">

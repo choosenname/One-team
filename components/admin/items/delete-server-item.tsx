@@ -15,7 +15,7 @@ export const DeleteServerMenuItem: React.FC<DeleteServerProps> = ({ original }) 
 
     return (
         <DropdownMenuItem onClick={handleDeleteServer}>
-            Delete server
+            Удалить сервер
         </DropdownMenuItem>
     );
 };

@@ -119,7 +119,7 @@ export const RegisterForm = () => {
                             render={({field}) => (<FormItem>
                                 <FormLabel
                                     className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                                    Select department
+                                    Выбрать отдел
                                 </FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
@@ -145,7 +145,7 @@ export const RegisterForm = () => {
                         type="submit"
                         className="w-full"
                     >
-                        Create an account
+                        Создать аккаунт
                     </Button>
                 </form>
             </Form>

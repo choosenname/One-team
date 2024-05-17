@@ -16,7 +16,7 @@ export const NavigationAdmin = () => {
             <ActionTooltip
                 side="right"
                 align="center"
-                label="Admin panel"
+                label="Панель администратора"
             >
                 <button
                     onClick={onClick}
