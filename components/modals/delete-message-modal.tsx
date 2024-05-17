@@ -46,11 +46,11 @@ export const DeleteMessageModal = () => {
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Delete Message
+                        Удалить сообщение
                     </DialogTitle>
                     <DialogDescription className="text-center text-zinc-500">
-                        Are you sure you want to do this? <br />
-                        The message will be permanently deleted.
+                        Вы уверены, что хотите это сделать? <br />
+                        Сообщение будет удалено навсегда.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className="bg-gray-100 px-6 py-4">
@@ -60,13 +60,13 @@ export const DeleteMessageModal = () => {
                             onClick={onClose}
                             variant="ghost"
                         >
-                            Cancel
+                            Отмена
                         </Button>
                         <Button
                             disabled={isLoading}
                             onClick={onClick}
                         >
-                            Confirm
+                            Подтвердить
                         </Button>
                     </div>
                 </DialogFooter>

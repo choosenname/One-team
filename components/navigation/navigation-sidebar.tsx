@@ -1,15 +1,15 @@
-import {currentUser} from "@/lib/auth";
-import {redirect} from "next/navigation";
-import {db} from "@/lib/db";
-import {NavigationAction} from "@/components/navigation/navigation-action";
-import {NavigationItem} from "@/components/navigation/navigation-item";
-import {Separator} from "@/components/ui/separator";
+import { currentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { NavigationAction } from "@/components/navigation/navigation-action";
+import { NavigationItem } from "@/components/navigation/navigation-item";
+import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {ModeToggle} from "@/components/mode-toggle";
-import {UserButton} from "@/components/auth/user-button";
-import {getUserById} from "@/data/user";
-import {NavigationMessages} from "@/components/navigation/navigation-messages";
-import {NavigationAdmin} from "@/components/navigation/navigation-admin";
+import { ModeToggle } from "@/components/mode-toggle";
+import { UserButton } from "@/components/auth/user-button";
+import { getUserById } from "@/data/user";
+import { NavigationMessages } from "@/components/navigation/navigation-messages";
+import { NavigationAdmin } from "@/components/navigation/navigation-admin";
 
 export const NavigationSidebar = async () => {
     const user = await currentUser();
@@ -60,9 +60,9 @@ export const NavigationSidebar = async () => {
                 ))}
             </ScrollArea>
             <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
-                <ModeToggle/>
+                <ModeToggle />
                 <UserButton user={dbUser} />
             </div>
         </div>
-    )
-}
+    );
+};

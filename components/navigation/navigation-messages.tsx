@@ -2,7 +2,6 @@
 
 import {ActionTooltip} from "@/components/action-tooltip";
 import {MessageCircleMore} from "lucide-react";
-import {useModal} from "@/hooks/use-modal-store";
 import {useRouter} from "next/navigation";
 
 export const NavigationMessages = () => {
@@ -17,7 +16,7 @@ export const NavigationMessages = () => {
             <ActionTooltip
                 side="right"
                 align="center"
-                label="Me"
+                label="Мои сообщения"
             >
                 <button
                     onClick={onClick}

@@ -80,7 +80,7 @@ export const LoginForm = () => {
                     type="submit"
                     className="w-full"
                 >
-                    Вход
+                    Войти
                 </Button>
             </form>
         </Form>

@@ -19,11 +19,11 @@ interface ConversationListProps {
 }
 
 const ConversationList: React.FC<ConversationListProps> = ({
-                                                               initialItems, users,
+                                                               initialItems,
                                                            }) => {
     const router = useRouter();
     const session = useSession();
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [, setIsModalOpen] = useState(false);
     const [items, setItems] = useState<FullConversationType[]>(initialItems);
 
     const {conversationId, isOpen} = useConversation();
@@ -99,7 +99,7 @@ const ConversationList: React.FC<ConversationListProps> = ({
             <div className='px-5 '>
                 <div className='flex justify-between pt-4 mb-4 '>
                     <div className='text-2xl font-bold text-neutral-800'>
-                        Messages
+                        Сообщения
                     </div>
                     <div
                         onClick={() => setIsModalOpen(true)}
