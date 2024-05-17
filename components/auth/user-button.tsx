@@ -31,13 +31,13 @@ export const UserButton = ({user}: UserButtonProps) => {
                 <Button variant="ghost" onClick={() => onOpen("editProfile", {user})}>
                     <DropdownMenuItem>
                         <Settings className="h-4 w-4 mr-2"/>
-                        Profile
+                        Профиль
                     </DropdownMenuItem>
                 </Button>
                 <LogoutButton>
                     <DropdownMenuItem>
                         <LogOut className="h-4 w-4 mr-2" />
-                        Logout
+                        Выйти
                     </DropdownMenuItem>
                 </LogoutButton>
             </DropdownMenuContent>

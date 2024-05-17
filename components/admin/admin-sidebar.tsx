@@ -14,7 +14,7 @@ export const AdminSidebar = async () => {
 
     return (<div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
             <div className="w-full text-md font-semibold px-3 flex items-center h-10">
-                Admin Panel
+                Панель администратора
             </div>
             <div className="px-3">
                 <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2"/>
