@@ -11,7 +11,7 @@ export const UserList = ({items}:UserListProps) => {
             <div className='px-5'>
                 <div className='flex-col'>
                     <div className='py-4 text-2xl font-bold text-neutral-800'>
-                        People
+                        Люди
                     </div>
                 </div>
                 {items.map(item => (

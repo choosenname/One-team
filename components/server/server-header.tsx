@@ -1,13 +1,13 @@
 "use client";
 
-import {ServerWithMembersWithProfiles} from "@/types";
-import {Department, MemberRole} from "@prisma/client";
-import {ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users} from "lucide-react";
+import { ServerWithMembersWithProfiles } from "@/types";
+import { Department, MemberRole } from "@prisma/client";
+import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
 
 import {
     DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {useModal} from "@/hooks/use-modal-store";
+import { useModal } from "@/hooks/use-modal-store";
 
 interface ServerHeaderProps {
     server: ServerWithMembersWithProfiles;
@@ -15,13 +15,14 @@ interface ServerHeaderProps {
     department: Department | null;
 }
 
-export const ServerHeader = ({server, role, department}: ServerHeaderProps) => {
-    const {onOpen} = useModal();
+export const ServerHeader = ({ server, role, department }: ServerHeaderProps) => {
+    const { onOpen } = useModal();
 
     const isAdmin = role === MemberRole.ADMIN;
     const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
-    return (<DropdownMenu>
+    return (
+        <DropdownMenu>
             <DropdownMenuTrigger
                 className="focus:outline-none"
                 asChild
@@ -32,8 +33,8 @@ export const ServerHeader = ({server, role, department}: ServerHeaderProps) => {
                     <div className="flex flex-col">
                         {server.name}
                         <span className="text-xs font-light ">
-                        {department?.department}
-                    </span>
+                            {department?.department}
+                        </span>
                     </div>
                     <ChevronDown className="h-5 w-5 ml-auto"/>
                 </button>
@@ -41,49 +42,62 @@ export const ServerHeader = ({server, role, department}: ServerHeaderProps) => {
             <DropdownMenuContent
                 className="w-56 text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]"
             >
-                {isModerator && (<DropdownMenuItem
-                        onClick={() => onOpen("invite", {server})}
+                {isModerator && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("invite", { server })}
                         className="text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
                     >
-                        Invite People
+                        Пригласить участников
                         <UserPlus className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
-                {isAdmin && (<DropdownMenuItem
-                        onClick={() => onOpen("editServer", {server})}
+                    </DropdownMenuItem>
+                )}
+                {isAdmin && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("editServer", { server })}
                         className="px-3 py-2 text-sm cursor-pointer"
                     >
-                        Server Settings
+                        Настройки сервера
                         <Settings className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
-                {isAdmin && (<DropdownMenuItem
-                        onClick={() => onOpen("members", {server})}
+                    </DropdownMenuItem>
+                )}
+                {isAdmin && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("members", { server })}
                         className="px-3 py-2 text-sm cursor-pointer"
                     >
-                        Manage Members
+                        Управление участниками
                         <Users className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
-                {isModerator && (<DropdownMenuItem
+                    </DropdownMenuItem>
+                )}
+                {isModerator && (
+                    <DropdownMenuItem
                         onClick={() => onOpen("createChannel")}
                         className="px-3 py-2 text-sm cursor-pointer"
                     >
-                        Create Channel
+                        Создать канал
                         <PlusCircle className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
-                {isModerator && (<DropdownMenuSeparator/>)}
-                {isAdmin && (<DropdownMenuItem
-                        onClick={() => onOpen("deleteServer", {server})}
+                    </DropdownMenuItem>
+                )}
+                {isModerator && <DropdownMenuSeparator/>}
+                {isAdmin && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("deleteServer", { server })}
                         className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
                     >
-                        Delete Server
+                        Удалить сервер
                         <Trash className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
-                {!isAdmin && (<DropdownMenuItem
-                        onClick={() => onOpen("leaveServer", {server})}
+                    </DropdownMenuItem>
+                )}
+                {!isAdmin && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen("leaveServer", { server })}
                         className="text-rose-500 px-3 py-2 text-sm cursor-pointer"
                     >
-                        Leave Server
+                        Покинуть сервер
                         <LogOut className="h-4 w-4 ml-auto"/>
-                    </DropdownMenuItem>)}
+                    </DropdownMenuItem>
+                )}
             </DropdownMenuContent>
-        </DropdownMenu>)
+        </DropdownMenu>
+    )
 }

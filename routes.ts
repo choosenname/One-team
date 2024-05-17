@@ -14,12 +14,12 @@ export const publicRoutes = [
  */
 export const authRoutes = [
     "/login",
-    "/register",
     "/auth/error",
 ];
 
 export const adminRoutes = [
     "/admin",
+    "/register",
 ];
 
 /**

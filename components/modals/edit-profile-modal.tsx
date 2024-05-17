@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/files/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
-import {ProfileSchema} from "@/schemas";
+import { ProfileSchema } from "@/schemas";
 
 export const EditProfileModal = () => {
     const { isOpen, onClose, type, data } = useModal();
@@ -75,7 +75,7 @@ export const EditProfileModal = () => {
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        ⚙️ Settings
+                        ⚙️ Настройки
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -107,13 +107,13 @@ export const EditProfileModal = () => {
                                         <FormLabel
                                             className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                         >
-                                            Name
+                                            Имя
                                         </FormLabel>
                                         <FormControl>
                                             <Input
                                                 disabled={isLoading}
                                                 className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Name"
+                                                placeholder="Имя"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -130,7 +130,7 @@ export const EditProfileModal = () => {
                                         <FormLabel
                                             className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
                                         >
-                                            Password
+                                            Пароль
                                         </FormLabel>
                                         <FormControl>
                                             <Input
@@ -148,7 +148,7 @@ export const EditProfileModal = () => {
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">
                             <Button disabled={isLoading}>
-                                Save
+                                Сохранить
                             </Button>
                         </DialogFooter>
                     </form>

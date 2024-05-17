@@ -56,9 +56,9 @@ model Member {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   role      MemberRole @default(GUEST)
   serverId  String     @db.ObjectId
-  server    Server     @relation(name: "MemberToServer", fields: [serverId], references: [id])
+  server    Server     @relation(name: "MemberToServer", fields: [serverId], references: [id], onDelete: Cascade)
   userId    String     @db.ObjectId
-  user      User       @relation(name: "MemberToUser", fields: [userId], references: [id])
+  user      User       @relation(name: "MemberToUser", fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]  @relation(name: "MemberToMessage")
   createdAt DateTime   @default(now())
   updateAt  DateTime   @updatedAt

@@ -42,7 +42,7 @@ export const NavigationItem = ({id, imageUrl, name
                     <Image
                         fill
                         src={imageUrl}
-                        alt="Channel"
+                        alt="Канал"
                     />
                 </div>
             </button>
