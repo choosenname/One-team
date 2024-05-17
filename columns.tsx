@@ -16,6 +16,7 @@ import {MoreHorizontal} from "lucide-react";
 import {useModal} from "@/hooks/use-modal-store";
 import {Server} from "@prisma/client";
 import {DeleteServerMenuItem} from "@/components/admin/items/delete-server-item";
+import axios from "axios";
 
 export const UserColumn: ColumnDef<FullUserType>[] = [
     {
@@ -57,6 +58,11 @@ export const UserColumn: ColumnDef<FullUserType>[] = [
                             onClick={() => navigator.clipboard.writeText(original.id)}
                         >
                             Copy user ID
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                            onClick={() => axios.delete(`/api/profile/${original.id}`)}
+                        >
+                            Удалить пользователя
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                     </DropdownMenuContent>
