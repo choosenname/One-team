@@ -54,7 +54,9 @@ const MemberIdPage = async ({
     const otherMember = memberOne.userId === user.id ? memberTwo : memberOne;
 
     return (
-        <ConverWrapper currentMember={currentMember} otherMember={otherMember} conversation={conversation} params={params} />
+        <>
+        </>
+        // <ConverWrapper currentMember={currentMember} otherMember={otherMember} conversation={conversation} />
     );
 }
 

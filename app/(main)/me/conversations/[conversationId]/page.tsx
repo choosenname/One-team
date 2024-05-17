@@ -5,6 +5,10 @@ import EmptyState from "@/components/conversation/empty-state";
 import Header from "@/components/conversation/conversation-header";
 import Body from "@/components/conversation/conversation-body";
 import Form from "@/components/conversation/conversation-form";
+import {ConverWrapper} from "@/components/chat/conver-wrapper";
+import {currentUser} from "@/lib/auth";
+import {useOtherUser} from "@/lib/users";
+import {db} from "@/lib/db";
 
 interface Iparams {
     conversationId: string;
@@ -14,26 +18,33 @@ const PageConversation = async ({ params }: { params: Iparams }) => {
     const conversation = await getConversationById(
         params.conversationId
     );
-    const messages = await getMessages(params.conversationId);
+
 
     if (!conversation) {
         return (
             <div className='h-full lg:pl-80'>
                 <div className='flex flex-col h-full'>
-                    <EmptyState />
+                    <EmptyState/>
                 </div>
             </div>
         );
     }
 
+    const curUser = await currentUser();
+
+    if (!curUser) {
+        return ("/auth/login");
+    }
+
+    const otherUsers = conversation.users.filter(
+        user => user.name !== curUser.name
+    );
+
+    const otherUser = otherUsers[0];
+
+
     return (
-        <div className='h-full lg:pl-80'>
-            <div className='flex flex-col h-full'>
-                <Header conversation={conversation} />
-                <Body initialMessages={messages} />
-                <Form />
-            </div>
-        </div>
+        <ConverWrapper currentMember={curUser} otherMember={otherUser} conversation={conversation} />
     );
 };
 

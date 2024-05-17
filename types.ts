@@ -34,7 +34,7 @@ export type FullMessageType = DirectMessage & {
 };
 
 export type FullConversationType = Conversation & {
-    users: ExtendedUser[]; directMessages: FullMessageType[];
+    users: ExtendedUser[];
 };
 
 export type FullUserType = User & {
