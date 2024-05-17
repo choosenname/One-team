@@ -10,10 +10,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {FormError} from "@/components/form-error";
 import {login} from "@/actions/login";
-import {useEffect, useState, useTransition} from "react";
-import {Department} from "@prisma/client";
-import axios from "axios";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {useState, useTransition} from "react";
 
 export const LoginForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -37,9 +34,7 @@ export const LoginForm = () => {
     }
 
     return (<CardWrapper
-        headerLabel="Welcome back"
-        backButtonLabel="Don't have an account?"
-        backButtonHref="/register"
+        headerLabel="Добро пожаловать"
     >
         <Form {...form}>
             <form
@@ -85,7 +80,7 @@ export const LoginForm = () => {
                     type="submit"
                     className="w-full"
                 >
-                    Login
+                    Вход
                 </Button>
             </form>
         </Form>
