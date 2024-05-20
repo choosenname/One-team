@@ -36,11 +36,7 @@ const PageConversation = async ({ params }: { params: Iparams }) => {
 
     if (!conversation) {
         return (
-            <div className='h-full lg:pl-80'>
-                <div className='flex flex-col h-full'>
-                    <EmptyState/>
-                </div>
-            </div>
+            <EmptyState/>
         );
     }
 
