@@ -27,9 +27,7 @@ import {ExtendedUser} from "@/next-auth";
 interface ChatItemProps {
     id: string;
     content: string;
-    member: Member & {
-        user: User;
-    };
+    member:  User;
     timestamp: string;
     fileUrl: string | null;
     sourceMessageMember: Member & {
@@ -44,8 +42,7 @@ interface ChatItemProps {
 }
 
 const roleIconMap = {
-    "GUEST": null,
-    "MODERATOR": <ShieldCheck className="h-4 w-4 ml-2 text-indigo-500"/>,
+    "USER": null,
     "ADMIN": <ShieldAlert className="h-4 w-4 ml-2 text-rose-500"/>,
 }
 
@@ -137,13 +134,13 @@ export const ConverChatItem = ({
     return (<div ref={ref} className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
         <div className="group flex gap-x-2 items-start w-full">
             <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
-                <UserAvatar src={member.user.imageUrl}/>
+                <UserAvatar src={member.imageUrl}/>
             </div>
             <div className="flex flex-col w-full">
                 <div className="flex items-center gap-x-2">
                     <div className="flex items-center">
                         <p onClick={onMemberClick} className="font-semibold text-sm hover:underline cursor-pointer">
-                            {member.user.name}
+                            {member.name}
                         </p>
                         <ActionTooltip label={member.role}>
                             {roleIconMap[member.role]}

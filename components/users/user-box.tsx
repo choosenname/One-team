@@ -17,16 +17,8 @@ export const UserBox = ({ data }: UserBoxProps) => {
     const handleClick = useCallback(() => {
         setIsLoading(true);
 
-        axios
-            .post("/api/conversations", {
-                userId: data.id,
-            })
-            .then(response => {
-                router.push(`/me/conversations/${response.data.id}`);
-            })
-            .finally(() => {
+                router.push(`/me/conversations/${data.id}`);
                 setIsLoading(false);
-            });
     }, [data, router]);
 
     return (

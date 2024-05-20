@@ -2,7 +2,8 @@ import { db } from "@/lib/db";
 import {currentUser} from "@/lib/auth";
 
 export const getConversations = async () => {
-    const user = await currentUser();
+    return null;
+    /*const user = await currentUser();
 
     if (!user?.id) {
         return [];
@@ -32,10 +33,10 @@ export const getConversations = async () => {
         return conversations;
     } catch (error) {
         return [];
-    }
+    }*/
 };
 
-export const getConversationById = async (conversationId: string) => {
+/*export const getConversationById = async (conversationId: string) => {
     try {
         const user = await currentUser();
 
@@ -54,7 +55,7 @@ export const getConversationById = async (conversationId: string) => {
     } catch (error) {
         return null;
     }
-};
+};*/
 
 
 export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
@@ -69,7 +70,7 @@ export const getOrCreateConversation = async (memberOneId: string, memberTwoId: 
 
 const findConversation = async (memberOneId: string, memberTwoId: string) => {
     try {
-        return await db.conversationTwo.findFirst({
+        return await db.conversation.findFirst({
             where: {
                 AND: [
                     { memberOneId: memberOneId },
@@ -77,16 +78,8 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
                 ]
             },
             include: {
-                memberOne: {
-                    include: {
-                        user: true,
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        user: true,
-                    }
-                }
+                memberOne: true,
+                memberTwo: true,
             }
         });
     } catch {
@@ -96,25 +89,17 @@ const findConversation = async (memberOneId: string, memberTwoId: string) => {
 
 const createNewConversation = async (memberOneId: string, memberTwoId: string) => {
     try {
-        return await db.conversationTwo.create({
+        return await db.conversation.create({
             data: {
                 memberOneId,
                 memberTwoId,
             },
             include: {
-                memberOne: {
-                    include: {
-                        user: true,
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        user: true,
-                    }
-                }
+                memberOne: true,
+                memberTwo: true,
             }
         })
-    } catch {
+    } catch (e) {
         return null;
     }
 }

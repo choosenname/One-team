@@ -16,23 +16,21 @@ model Department {
 }
 
 model User {
-  id              String          @id @default(auto()) @map("_id") @db.ObjectId
-  name            String          @unique
-  imageUrl        String
-  password        String
-  role            UserRole        @default(USER)
-  servers         Server[]        @relation(name: "ServerToUser")
-  channels        Channel[]       @relation(name: "ChannelToUser")
-  members         Member[]        @relation(name: "MemberToUser")
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-  departmentId    String          @db.ObjectId
-  department      Department      @relation(name: "DepartmentToUser", fields: [departmentId], references: [id])
-  conversationIds String[]        @db.ObjectId
-  conversations   Conversation[]  @relation(name: "ConversationToUser", fields: [conversationIds], references: [id])
-  seenMessageIds  String[]        @db.ObjectId
-  seenMessages    DirectMessage[] @relation(name: "Seen", fields: [seenMessageIds], references: [id])
-  messages        DirectMessage[] @relation(name: "DirectMessageToUser")
+  id                     String          @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String          @unique
+  imageUrl               String
+  password               String
+  role                   UserRole        @default(USER)
+  servers                Server[]        @relation(name: "ServerToUser")
+  channels               Channel[]       @relation(name: "ChannelToUser")
+  members                Member[]        @relation(name: "MemberToUser")
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+  departmentId           String          @db.ObjectId
+  department             Department      @relation(name: "DepartmentToUser", fields: [departmentId], references: [id])
+  directMessages         DirectMessage[]
+  conversationsInitiated Conversation[]  @relation("MemberOne")
+  conversationsReceived  Conversation[]  @relation("MemberTwo")
 }
 
 model Server {
@@ -103,28 +101,31 @@ model Message {
 }
 
 model Conversation {
-  id                String          @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt         DateTime        @default(now())
-  lastMessageAt     DateTime        @default(now())
-  name              String?
-  isGroup           Boolean?
-  directMessagesIds String[]        @db.ObjectId
-  directMessages    DirectMessage[] @relation(name: "ConversationToDirectMessage")
-  userIds           String[]        @db.ObjectId
-  users             User[]          @relation(name: "ConversationToUser", fields: [userIds], references: [id])
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  memberOneId    String          @db.ObjectId
+  memberOne      User            @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
+  memberTwoId    String          @db.ObjectId
+  memberTwo      User            @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  directMessages DirectMessage[]
+
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberTwoId])
 }
 
 model DirectMessage {
   id             String       @id @default(auto()) @map("_id") @db.ObjectId
-  body           String?
-  image          String?
-  createdAt      DateTime     @default(now())
-  seenIds        String[]     @db.ObjectId
-  seen           User[]       @relation(name: "Seen", fields: [seenIds], references: [id])
+  content        String
+  fileUrl        String?
+  memberId       String       @db.ObjectId
+  member         User         @relation(fields: [memberId], references: [id], onDelete: Cascade)
   conversationId String       @db.ObjectId
-  conversation   Conversation @relation(name: "ConversationToDirectMessage", fields: [conversationId], references: [id])
-  senderId       String       @db.ObjectId
-  sender         User         @relation(name: "DirectMessageToUser", fields: [senderId], references: [id])
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  deleted        Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([memberId])
+  @@index([conversationId])
 }
 
 enum UserRole {

@@ -1,5 +1,5 @@
 import React from "react";
-import {getConversationById} from "@/lib/conversation";
+import {getOrCreateConversation} from "@/lib/conversation";
 import {getMessages} from "@/lib/messages";
 import EmptyState from "@/components/conversation/empty-state";
 import Header from "@/components/conversation/conversation-header";
@@ -9,16 +9,30 @@ import {ConverWrapper} from "@/components/chat/conver-wrapper";
 import {currentUser} from "@/lib/auth";
 import {useOtherUser} from "@/lib/users";
 import {db} from "@/lib/db";
+import {redirect} from "next/navigation";
 
 interface Iparams {
-    conversationId: string;
+    memberId: string;
 }
 
 const PageConversation = async ({ params }: { params: Iparams }) => {
-    const conversation = await getConversationById(
-        params.conversationId
-    );
+    const user = await currentUser();
 
+    if (!user) {
+        return ("/auth/login");
+    }
+
+    const currentMember = await db.user.findFirst({
+        where: {
+            id: user.id,
+        },
+    });
+
+    if (!currentMember) {
+        return redirect("/");
+    }
+
+    const conversation = await getOrCreateConversation(currentMember.id, params.memberId);
 
     if (!conversation) {
         return (
@@ -36,15 +50,13 @@ const PageConversation = async ({ params }: { params: Iparams }) => {
         return ("/auth/login");
     }
 
-    const otherUsers = conversation.users.filter(
-        user => user.name !== curUser.name
-    );
+    const { memberOne, memberTwo } = conversation;
 
-    const otherUser = otherUsers[0];
+    const otherMember = memberOne.id === user.id ? memberTwo : memberOne;
 
 
     return (
-        <ConverWrapper currentMember={curUser} otherMember={otherUser} conversation={conversation} />
+        <ConverWrapper currentMember={currentMember} otherMember={otherMember} conversation={conversation} />
     );
 };
 

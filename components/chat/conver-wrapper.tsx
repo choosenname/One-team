@@ -1,6 +1,6 @@
 "use client"
 
-import {Channel, ChannelType, Conversation, ConversationTwo, Member, User} from "@prisma/client";
+import {Channel, ChannelType, Conversation, Member, User} from "@prisma/client";
 import {ChatHeader} from "@/components/chat/chat-header";
 import {ChatMessages} from "@/components/chat/chat-messages";
 import {ChatInput} from "@/components/chat/chat-input";

@@ -4,7 +4,6 @@ import { NextApiResponseServerIo } from "@/types";
 import { currentUserPages } from "@/lib/current-user-pages";
 import { db } from "@/lib/db";
 
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponseServerIo,
@@ -31,33 +30,25 @@ export default async function handler(
         }
 
 
-        const conversation = await db.conversationTwo.findFirst({
+        const conversation = await db.conversation.findFirst({
             where: {
                 id: conversationId as string,
                 OR: [
                     {
                         memberOne: {
-                            userId: user.id,
+                            id: user.id,
                         }
                     },
                     {
                         memberTwo: {
-                            userId: user.id,
+                            id: user.id,
                         }
                     }
                 ]
             },
             include: {
-                memberOne: {
-                    include: {
-                        user: true,
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        user: true,
-                    }
-                }
+                memberOne: true,
+                memberTwo: true,
             }
         })
 
@@ -65,13 +56,13 @@ export default async function handler(
             return res.status(404).json({ message: "Conversation not found" });
         }
 
-        const member = conversation.memberOne.userId === user.id ? conversation.memberOne : conversation.memberTwo
+        const member = conversation.memberOne.id === user.id ? conversation.memberOne : conversation.memberTwo
 
         if (!member) {
             return res.status(404).json({ message: "Member not found" });
         }
 
-        const message = await db.directMessageTwo.create({
+        const message = await db.directMessage.create({
             data: {
                 content,
                 fileUrl,
@@ -79,11 +70,7 @@ export default async function handler(
                 memberId: member.id,
             },
             include: {
-                member: {
-                    include: {
-                        user: true,
-                    }
-                }
+                member: true,
             }
         });
 
