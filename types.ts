@@ -50,9 +50,8 @@ export type ServersWithChannels = (Server & {
 })[]
 
 export type MessageWithMemberWithProfile = Message & {
-    member: Member & {
-        user: User
-    }, sourceMessage: Message & {
+    member: User,
+    sourceMessage: Message & {
         member: Member & {
             user: User
         }

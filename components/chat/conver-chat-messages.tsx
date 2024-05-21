@@ -1,6 +1,6 @@
 "use client";
 
-import {ElementRef, Fragment, useRef} from "react";
+import {ElementRef, Fragment, useEffect, useRef} from "react";
 import {format} from "date-fns";
 import {Member, Message, User} from "@prisma/client";
 import {Loader2, ServerCrash} from "lucide-react";
@@ -50,6 +50,16 @@ export const ConverChatMessages = ({
 
     const chatRef = useRef<ElementRef<"div">>(null);
     const bottomRef = useRef<ElementRef<"div">>(null);
+
+    useEffect(() => {
+        if (Notification.permission === "default") {
+            Notification.requestPermission().then(permission => {
+                if (permission !== "granted") {
+                    alert("Please enable notifications to receive updates.");
+                }
+            });
+        }
+    }, []);
 
     const {
         data, fetchNextPage, hasNextPage, isFetchingNextPage, status,
