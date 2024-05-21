@@ -20,7 +20,7 @@ export const ChatWrapper = ({channel, member}: ChatWrapperProps) => {
         <>
             <ChatHeader
                 name={channel.name}
-                serverId={channel.serverId}
+                // serverId={channel.serverId}
                 type="channel"
                 date={selectedDate}
                 setDate={setSelectedDate}

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { useEffect, useState } from "react";
 import { Department } from "@prisma/client";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const formSchema = z.object({
     name: z.string().min(1, {
@@ -29,16 +30,16 @@ const formSchema = z.object({
     }),
 });
 
-export const CreateServerModal = () => {
+export const CreateServerAdminModal = () => {
     const { isOpen, onClose, type } = useModal();
     const [departments, setDepartments] = useState<Department[]>([]);
     const router = useRouter();
 
-    const isModalOpen = isOpen && type === "createServer";
+    const isModalOpen = isOpen && type === "createServerAdmin";
 
     const form = useForm({
         resolver: zodResolver(formSchema), defaultValues: {
-            name: "", imageUrl: "", departmentId: 'personal'
+            name: "", imageUrl: "", departmentId: ''
         }
     });
 
@@ -123,6 +124,33 @@ export const CreateServerModal = () => {
                                                 {...field}
                                             />
                                         </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="departmentId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel
+                                            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                                            Выберите отдел
+                                        </FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger className="w-[180px]">
+                                                    <SelectValue placeholder="Выберите отдел" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {departments.map((department) => (
+                                                    <SelectItem key={department.id} value={department.id}>
+                                                        {department.department}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
                                         <FormMessage />
                                     </FormItem>
                                 )}
