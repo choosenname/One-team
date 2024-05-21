@@ -34,7 +34,7 @@ export type FullMessageType = DirectMessage & {
 };
 
 export type FullConversationType = Conversation & {
-    users: ExtendedUser[]; directMessages: FullMessageType[];
+    users: ExtendedUser[];
 };
 
 export type FullUserType = User & {
@@ -49,10 +49,20 @@ export type ServersWithChannels = (Server & {
     channels: Channel[];
 })[]
 
-export type MessageWithMemberWithProfile = Message & {
+export type MessageWithMemberWithProfileServer = Message & {
     member: Member & {
         user: User
-    }, sourceMessage: Message & {
+    },
+    sourceMessage: Message & {
+        member: Member & {
+            user: User
+        }
+    },
+}
+
+export type MessageWithMemberWithProfile = Message & {
+    member: User,
+    sourceMessage: Message & {
         member: Member & {
             user: User
         }

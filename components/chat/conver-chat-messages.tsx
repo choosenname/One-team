@@ -1,6 +1,6 @@
 "use client";
 
-import {ElementRef, Fragment, useRef} from "react";
+import {ElementRef, Fragment, useEffect, useRef} from "react";
 import {format} from "date-fns";
 import {Member, Message, User} from "@prisma/client";
 import {Loader2, ServerCrash} from "lucide-react";
@@ -11,13 +11,15 @@ import {ChatWelcome} from "@/components/chat/chat-welcome";
 import {ChatItem} from "@/components/chat/chat-item";
 import {useChatSocket} from "@/hooks/use-chat-socket";
 import {useChatScroll} from "@/hooks/use-chat-scroll";
-import {MessageWithMemberWithProfile, MessageWithMemberWithProfileServer} from "@/types";
+import {MessageWithMemberWithProfile} from "@/types";
+import {ConverChatItem} from "@/components/chat/conver-chat-item";
+import {ExtendedUser} from "@/next-auth";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 interface ChatMessagesProps {
     name: string;
-    member: Member;
+    member: ExtendedUser;
     chatId: string;
     apiUrl: string;
     socketUrl: string;
@@ -29,7 +31,7 @@ interface ChatMessagesProps {
     searchMessage: string | undefined;
 }
 
-export const ChatMessages = ({
+export const ConverChatMessages = ({
                                  name,
                                  member,
                                  chatId,
@@ -48,6 +50,16 @@ export const ChatMessages = ({
 
     const chatRef = useRef<ElementRef<"div">>(null);
     const bottomRef = useRef<ElementRef<"div">>(null);
+
+    useEffect(() => {
+        if (Notification.permission === "default") {
+            Notification.requestPermission().then(permission => {
+                if (permission !== "granted") {
+                    alert("Please enable notifications to receive updates.");
+                }
+            });
+        }
+    }, []);
 
     const {
         data, fetchNextPage, hasNextPage, isFetchingNextPage, status,
@@ -98,13 +110,13 @@ export const ChatMessages = ({
         <div className="flex flex-col-reverse mt-auto">
             {data?.pages?.map((group, i) => (<Fragment key={i}>
                 {group.items
-                    .filter((message: MessageWithMemberWithProfileServer) => {
+                    .filter((message: MessageWithMemberWithProfile) => {
                         return !searchMessage || message.content.includes(searchMessage)
                     })
-                    .filter((message: MessageWithMemberWithProfileServer) => {
+                    .filter((message: MessageWithMemberWithProfile) => {
                         return !selectedDate || new Date(message.createdAt).getDate() === selectedDate.getDate();
                     })
-                    .map((message: MessageWithMemberWithProfileServer) => (<ChatItem
+                    .map((message: MessageWithMemberWithProfile) => (<ConverChatItem
                             key={message.id}
                             id={message.id}
                             currentMember={member}

@@ -3,26 +3,41 @@
 import React, {useEffect} from 'react';
 import {useToast} from '@/components/ui/use-toast';
 import {pusherClient} from "@/lib/pusher";
-import {FullMessageType} from "@/types";
+import {FullMessageType, MessageWithMemberWithProfile} from "@/types";
 import {useCurrentUser} from "@/hooks/use-current-user";
+import {useChatSocket} from "@/hooks/use-chat-socket";
+import {useSocket} from "@/components/providers/socket-provider";
+import {useQueryClient} from "@tanstack/react-query";
 
 const Notifications = () => {
-    const user = useCurrentUser();
-    const {toast} = useToast();
+    const { socket } = useSocket();
+    const queryClient = useQueryClient();
+
+    const addKey = `chat:messages`;
 
     useEffect(() => {
-        const channel = pusherClient.subscribe('notification');
-        channel.bind('notification:new', (data: FullMessageType) => {
-            if (user?.id == data.senderId) return;
-            toast({
-                title: data.sender.name || "", description: data.body,
-            })
+        if (!socket) {
+            return;
+        }
+
+        const showNotification = (message: MessageWithMemberWithProfile) => {
+            if (Notification.permission === "granted") {
+                new Notification("New message", {
+                    body: message.content,
+                    icon: "/path/to/icon.png", // Замените на путь к вашей иконке
+                });
+            }
+        };
+
+        socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+            showNotification(message);
         });
 
         return () => {
-            pusherClient.unsubscribe('notification');
-        };
-    }, []);
+            socket.off(addKey);
+        }
+    }, [queryClient, addKey, socket]);
+
 
     return (<></>);
 };

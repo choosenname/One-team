@@ -4,7 +4,6 @@ import { NextApiResponseServerIo } from "@/types";
 import { currentUserPages } from "@/lib/current-user-pages";
 import { db } from "@/lib/db";
 
-/*
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponseServerIo,
@@ -37,27 +36,19 @@ export default async function handler(
                 OR: [
                     {
                         memberOne: {
-                            userId: user.id,
+                            id: user.id,
                         }
                     },
                     {
                         memberTwo: {
-                            userId: user.id,
+                            id: user.id,
                         }
                     }
                 ]
             },
             include: {
-                memberOne: {
-                    include: {
-                        user: true,
-                    }
-                },
-                memberTwo: {
-                    include: {
-                        user: true,
-                    }
-                }
+                memberOne: true,
+                memberTwo: true,
             }
         })
 
@@ -65,7 +56,7 @@ export default async function handler(
             return res.status(404).json({ message: "Conversation not found" });
         }
 
-        const member = conversation.memberOne.userId === user.id ? conversation.memberOne : conversation.memberTwo
+        const member = conversation.memberOne.id === user.id ? conversation.memberOne : conversation.memberTwo
 
         if (!member) {
             return res.status(404).json({ message: "Member not found" });
@@ -79,21 +70,19 @@ export default async function handler(
                 memberId: member.id,
             },
             include: {
-                member: {
-                    include: {
-                        user: true,
-                    }
-                }
+                member: true,
             }
         });
 
         const channelKey = `chat:${conversationId}:messages`;
+        const allChannelsKey = `chat:messages`;
 
         res?.socket?.server?.io?.emit(channelKey, message);
+        res?.socket?.server?.io?.emit(allChannelsKey, message);
 
         return res.status(200).json(message);
     } catch (error) {
         console.log("[DIRECT_MESSAGES_POST]", error);
         return res.status(500).json({ message: "Internal Error" });
     }
-}*/
+}

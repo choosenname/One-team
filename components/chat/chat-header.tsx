@@ -13,7 +13,6 @@ import {Input} from "@/components/ui/input";
 // import {ChatVideoButton} from "@/components/chat/chat-video-button";
 
 interface ChatHeaderProps {
-    serverId: string;
     name: string;
     type: "channel" | "conversation";
     imageUrl?: string;
@@ -24,11 +23,10 @@ interface ChatHeaderProps {
 }
 
 export const ChatHeader = ({
-                                     serverId, name, type, imageUrl, date, setDate, searchMessage, setSearchMessage
+                                 name, type, imageUrl, date, setDate, searchMessage, setSearchMessage
                                  }: ChatHeaderProps) => {
     return (<div
             className="text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2">
-            <MobileToggle serverId={serverId}/>
             {type === "channel" && (<Hash className="w-5 h-5 text-zinc-500 dark:text-zinc-400 mr-2"/>)}
             {type === "conversation" && (<UserAvatar
                     src={imageUrl}

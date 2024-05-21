@@ -3,19 +3,31 @@
 import {ActionTooltip} from "@/components/action-tooltip";
 import {Plus} from "lucide-react";
 import {useModal} from "@/hooks/use-modal-store";
+import {UserRole} from "@prisma/client";
 
-export const NavigationAction = () => {
-    const { onOpen } = useModal();
+interface NavigationActionProps {
+    userRole: UserRole;
+}
 
-    return (
-        <div>
+export const NavigationAction = ({userRole}: NavigationActionProps) => {
+    const {onOpen} = useModal();
+
+    const onClick = () => {
+        if (userRole === UserRole.ADMIN) {
+            onOpen("createServerAdmin");
+        } else {
+            onOpen("createServer");
+        }
+    };
+
+    return (<div>
             <ActionTooltip
                 side="right"
                 align="center"
                 label="Добавить сервер"
             >
                 <button
-                    onClick={() => onOpen("createServer")}
+                    onClick={onClick}
                     className="group flex items-center"
                 >
                     <div
@@ -27,6 +39,5 @@ export const NavigationAction = () => {
                     </div>
                 </button>
             </ActionTooltip>
-        </div>
-    )
+        </div>)
 }
