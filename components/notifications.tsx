@@ -1,17 +1,24 @@
-"use client"
+"use client";
 
-import React, {useEffect} from 'react';
-import {useToast} from '@/components/ui/use-toast';
-import {pusherClient} from "@/lib/pusher";
-import {FullMessageType, MessageWithMemberWithProfile} from "@/types";
+import React, { useEffect, useRef } from 'react';
+import { MessageWithMemberWithProfile } from "@/types";
+import { useSocket } from "@/components/providers/socket-provider";
+import { useQueryClient } from "@tanstack/react-query";
 import {useCurrentUser} from "@/hooks/use-current-user";
-import {useChatSocket} from "@/hooks/use-chat-socket";
-import {useSocket} from "@/components/providers/socket-provider";
-import {useQueryClient} from "@tanstack/react-query";
 
 const Notifications = () => {
+    const user = useCurrentUser();
     const { socket } = useSocket();
+    const audioRef = useRef<HTMLAudioElement>(null);
     const queryClient = useQueryClient();
+
+    const playNotificationSound = () => {
+        if (audioRef.current) {
+            audioRef.current.play().catch(error => {
+                console.error("Error playing sound:", error);
+            });
+        }
+    };
 
     const addKey = `chat:messages`;
 
@@ -22,7 +29,7 @@ const Notifications = () => {
 
         const showNotification = (message: MessageWithMemberWithProfile) => {
             if (Notification.permission === "granted") {
-                new Notification("New message", {
+                new Notification("Новое сообщение", {
                     body: message.content,
                     icon: "/path/to/icon.png", // Замените на путь к вашей иконке
                 });
@@ -30,16 +37,27 @@ const Notifications = () => {
         };
 
         socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+            if(message.member.id === user?.id) {
+                return;
+            }
+
+            playNotificationSound();
             showNotification(message);
         });
 
         return () => {
             socket.off(addKey);
-        }
+        };
     }, [queryClient, addKey, socket]);
 
-
-    return (<></>);
+    return (
+        <>
+            <audio ref={audioRef} className="hidden">
+                <source src="/notification.mp3" type="audio/mp3" />
+                Your browser does not support the audio element.
+            </audio>
+        </>
+    );
 };
 
 export default Notifications;
