@@ -37,6 +37,8 @@ const Notifications = () => {
         };
 
         socket.on(addKey, (message: MessageWithMemberWithProfile) => {
+            console.log(message);
+
             if(message.member.id === user?.id) {
                 return;
             }
