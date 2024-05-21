@@ -49,6 +49,17 @@ export type ServersWithChannels = (Server & {
     channels: Channel[];
 })[]
 
+export type MessageWithMemberWithProfileServer = Message & {
+    member: Member & {
+        user: User
+    },
+    sourceMessage: Message & {
+        member: Member & {
+            user: User
+        }
+    },
+}
+
 export type MessageWithMemberWithProfile = Message & {
     member: User,
     sourceMessage: Message & {

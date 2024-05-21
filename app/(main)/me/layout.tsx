@@ -2,7 +2,6 @@ import React from "react";
 import {UserList} from "@/components/users/user-list";
 import {getUsers} from "@/lib/users";
 import {getConversations} from "@/lib/conversation";
-import ConversationList from "@/components/conversation/conversation-list";
 
 export default async function UsersLayout({
                                               children,

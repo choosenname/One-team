@@ -11,7 +11,7 @@ import {ChatWelcome} from "@/components/chat/chat-welcome";
 import {ChatItem} from "@/components/chat/chat-item";
 import {useChatSocket} from "@/hooks/use-chat-socket";
 import {useChatScroll} from "@/hooks/use-chat-scroll";
-import {MessageWithMemberWithProfile} from "@/types";
+import {MessageWithMemberWithProfile, MessageWithMemberWithProfileServer} from "@/types";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -98,13 +98,13 @@ export const ChatMessages = ({
         <div className="flex flex-col-reverse mt-auto">
             {data?.pages?.map((group, i) => (<Fragment key={i}>
                 {group.items
-                    .filter((message: MessageWithMemberWithProfile) => {
+                    .filter((message: MessageWithMemberWithProfileServer) => {
                         return !searchMessage || message.content.includes(searchMessage)
                     })
-                    .filter((message: MessageWithMemberWithProfile) => {
+                    .filter((message: MessageWithMemberWithProfileServer) => {
                         return !selectedDate || new Date(message.createdAt).getDate() === selectedDate.getDate();
                     })
-                    .map((message: MessageWithMemberWithProfile) => (<ChatItem
+                    .map((message: MessageWithMemberWithProfileServer) => (<ChatItem
                             key={message.id}
                             id={message.id}
                             currentMember={member}
