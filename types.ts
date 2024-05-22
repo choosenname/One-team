@@ -60,11 +60,12 @@ export type MessageWithMemberWithProfileServer = Message & {
     },
 }
 
-export type MessageWithMemberWithProfile = Message & {
+export type MessageWithMemberWithProfileAndConversation = Message & {
     member: User,
     sourceMessage: Message & {
         member: Member & {
             user: User
         }
     },
+    conversation: Conversation,
 }

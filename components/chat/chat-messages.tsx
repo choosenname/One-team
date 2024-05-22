@@ -11,7 +11,7 @@ import {ChatWelcome} from "@/components/chat/chat-welcome";
 import {ChatItem} from "@/components/chat/chat-item";
 import {useChatSocket} from "@/hooks/use-chat-socket";
 import {useChatScroll} from "@/hooks/use-chat-scroll";
-import {MessageWithMemberWithProfile, MessageWithMemberWithProfileServer} from "@/types";
+import {MessageWithMemberWithProfileAndConversation, MessageWithMemberWithProfileServer} from "@/types";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 

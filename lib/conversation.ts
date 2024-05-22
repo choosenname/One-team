@@ -36,18 +36,11 @@ export const getConversations = async () => {
     }*/
 };
 
-/*export const getConversationById = async (conversationId: string) => {
+export const getConversationById = async (conversationId: string) => {
     try {
-        const user = await currentUser();
-
-        if (!user?.name) return null;
-
         const conversation = await db.conversation.findUnique({
             where: {
                 id: conversationId,
-            },
-            include: {
-                users: true,
             },
         });
 
@@ -55,7 +48,7 @@ export const getConversations = async () => {
     } catch (error) {
         return null;
     }
-};*/
+};
 
 
 export const getOrCreateConversation = async (memberOneId: string, memberTwoId: string) => {
@@ -93,6 +86,7 @@ const createNewConversation = async (memberOneId: string, memberTwoId: string) =
             data: {
                 memberOneId,
                 memberTwoId,
+                isNotify: true,
             },
             include: {
                 memberOne: true,
