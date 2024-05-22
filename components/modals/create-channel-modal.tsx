@@ -134,7 +134,7 @@ export const CreateChannelModal = () => {
                                 name="type"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Тим канала</FormLabel>
+                                        <FormLabel>Тип канала</FormLabel>
                                         <Select
                                             disabled={isLoading}
                                             onValueChange={field.onChange}
