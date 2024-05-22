@@ -15,7 +15,7 @@ const VideoPlayer = ({ src, type, width, height }: VideoPlayerProps) => {
                 {/* Используем переданные параметры для источника видео */}
                 <source src={src} type={type} />
                 {/* Добавьте другие источники для поддержки различных форматов видео */}
-                Your browser does not support the video tag.
+                Ваш браузер не поддерживает тег video.
             </video>
         </div>
     );

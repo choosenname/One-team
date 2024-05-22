@@ -36,6 +36,7 @@ export const EmojiPicker = ({
                     theme={resolvedTheme}
                     data={data}
                     onEmojiSelect={(emoji: any) => onChange(emoji.native)}
+                    locale="ru"
                 />
             </PopoverContent>
         </Popover>

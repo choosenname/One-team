@@ -54,7 +54,7 @@ const Notifications = () => {
         <>
             <audio ref={audioRef} className="hidden">
                 <source src="/notification.mp3" type="audio/mp3" />
-                Your browser does not support the audio element.
+                Ваш браузер не поддерживает аудиоэлемент.
             </audio>
         </>
     );
