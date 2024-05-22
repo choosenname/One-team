@@ -71,7 +71,8 @@ export default async function handler(
             },
             include: {
                 member: true,
-            }
+                conversation: true,
+            },
         });
 
         const channelKey = `chat:${conversationId}:messages`;

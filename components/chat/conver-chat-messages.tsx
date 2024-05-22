@@ -11,7 +11,7 @@ import {ChatWelcome} from "@/components/chat/chat-welcome";
 import {ChatItem} from "@/components/chat/chat-item";
 import {useChatSocket} from "@/hooks/use-chat-socket";
 import {useChatScroll} from "@/hooks/use-chat-scroll";
-import {MessageWithMemberWithProfile} from "@/types";
+import {MessageWithMemberWithProfileAndConversation} from "@/types";
 import {ConverChatItem} from "@/components/chat/conver-chat-item";
 import {ExtendedUser} from "@/next-auth";
 
@@ -110,13 +110,13 @@ export const ConverChatMessages = ({
         <div className="flex flex-col-reverse mt-auto">
             {data?.pages?.map((group, i) => (<Fragment key={i}>
                 {group.items
-                    .filter((message: MessageWithMemberWithProfile) => {
+                    .filter((message: MessageWithMemberWithProfileAndConversation) => {
                         return !searchMessage || message.content.includes(searchMessage)
                     })
-                    .filter((message: MessageWithMemberWithProfile) => {
+                    .filter((message: MessageWithMemberWithProfileAndConversation) => {
                         return !selectedDate || new Date(message.createdAt).getDate() === selectedDate.getDate();
                     })
-                    .map((message: MessageWithMemberWithProfile) => (<ConverChatItem
+                    .map((message: MessageWithMemberWithProfileAndConversation) => (<ConverChatItem
                             key={message.id}
                             id={message.id}
                             currentMember={member}

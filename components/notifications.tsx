@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
-import { MessageWithMemberWithProfile } from "@/types";
+import { MessageWithMemberWithProfileAndConversation } from "@/types";
 import { useSocket } from "@/components/providers/socket-provider";
 import { useQueryClient } from "@tanstack/react-query";
 import {useCurrentUser} from "@/hooks/use-current-user";
@@ -27,7 +27,7 @@ const Notifications = () => {
             return;
         }
 
-        const showNotification = (message: MessageWithMemberWithProfile) => {
+        const showNotification = (message: MessageWithMemberWithProfileAndConversation) => {
             if (Notification.permission === "granted") {
                 new Notification("Новое сообщение", {
                     body: message.content,
@@ -36,10 +36,8 @@ const Notifications = () => {
             }
         };
 
-        socket.on(addKey, (message: MessageWithMemberWithProfile) => {
-            console.log(message);
-
-            if(message.member.id === user?.id) {
+        socket.on(addKey, (message: MessageWithMemberWithProfileAndConversation) => {
+            if(message.member.id === user?.id || !message.conversation.isNotify) {
                 return;
             }
 

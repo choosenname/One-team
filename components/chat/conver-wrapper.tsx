@@ -24,6 +24,7 @@ export const ConverWrapper = ({currentMember, otherMember, conversation}: ChatWr
             <ChatHeader
                 imageUrl={otherMember.imageUrl}
                 name={otherMember.name}
+                conversation={conversation}
                 // channelId={conversation.id}
                 // serverId={params.serverId}
                 type="conversation"

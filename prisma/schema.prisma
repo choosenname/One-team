@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "debian-openssl-3.0.x"]
 }
 
 model Department {
@@ -106,6 +106,7 @@ model Conversation {
   memberOne      User            @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
   memberTwoId    String          @db.ObjectId
   memberTwo      User            @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
+  isNotify       Boolean         @default(true) @db.Bool
   directMessages DirectMessage[]
 
   @@unique([memberOneId, memberTwoId])
