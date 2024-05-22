@@ -14,7 +14,7 @@ const AudioPlayer = ({ src, type, className }: AudioPlayerProps) => {
                 {/* Используем переданные параметры для источника аудио */}
                 <source src={src} type={type} />
                 {/* Добавьте другие источники для поддержки различных форматов аудио */}
-                Your browser does not support the audio tag.
+                Ваш браузер не поддерживает тег audio.
             </audio>
         </div>
     );

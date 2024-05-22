@@ -38,7 +38,7 @@ export const ChatNotificationButton = ({conversationId}: ChatNotificationProps) 
     };
 
     const Icon = isNotification ? Bell : BellOff;
-    const tooltipLabel = isNotification ? "Disable notifications" : "Enable notifications" ;
+    const tooltipLabel = isNotification ? "Отключить уведомления" : "Включить уведомления" ;
 
     return (
         <ActionTooltip side="bottom" label={tooltipLabel}>

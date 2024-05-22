@@ -38,7 +38,6 @@ export const publicApiPrefix = [
     "/api/direct-messages",
     "/api/departments",
     "/api",
-    "/api/conversation/664dfa822e1d34535812a7dc/notification"
 ];
 
 /**

@@ -204,7 +204,7 @@ export const ChatItem = ({
                         rel="noopener noreferrer"
                         className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
                     >
-                        PDF File
+                        PDF-файл
                     </a>
                 </div>)}
                 {isOther && (<div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
@@ -215,7 +215,7 @@ export const ChatItem = ({
                         rel="noopener noreferrer"
                         className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
                     >
-                        File {fileType}
+                        Файл {fileType}
                     </a>
                 </div>)}
                 {!fileUrl && !isEditing && (
@@ -238,7 +238,7 @@ export const ChatItem = ({
                                         <Input
                                             disabled={isLoading}
                                             className="p-2 bg-zinc-200/90 dark:bg-zinc-700/75 border-none border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200"
-                                            placeholder="Edited message"
+                                            placeholder="Отредактированное сообщение"
                                             {...field}
                                         />
                                     </div>
@@ -246,18 +246,18 @@ export const ChatItem = ({
                             </FormItem>)}
                         />
                         <Button disabled={isLoading} size="sm">
-                            Save
+                            Сохранить
                         </Button>
                     </form>
                     <span className="text-[10px] mt-1 text-zinc-400">
-                Press escape to cancel, enter to save
+                Нажмите escape для отмены, enter для сохранения
               </span>
                 </Form>)}
             </div>
         </div>
         {canDeleteMessage && (<div
             className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
-            <ActionTooltip label="Forward">
+            <ActionTooltip label="Переслать">
                 <Forward
                     onClick={() => onOpen("forwardMessage", {
                         apiUrl: `${socketUrl}/${id}`, query: socketQuery,
@@ -265,13 +265,13 @@ export const ChatItem = ({
                     className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
                 />
             </ActionTooltip>
-            {canEditMessage && (<ActionTooltip label="Edit">
+            {canEditMessage && (<ActionTooltip label="Редактировать">
                 <Edit
                     onClick={() => setIsEditing(true)}
                     className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
                 />
             </ActionTooltip>)}
-            <ActionTooltip label="Delete">
+            <ActionTooltip label="Удалить">
                 <Trash
                     onClick={() => onOpen("deleteMessage", {
                         apiUrl: `${socketUrl}/${id}`, query: socketQuery,

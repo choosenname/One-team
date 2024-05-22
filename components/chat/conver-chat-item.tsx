@@ -201,7 +201,7 @@ export const ConverChatItem = ({
                         rel="noopener noreferrer"
                         className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
                     >
-                        PDF File
+                        PDF-файл
                     </a>
                 </div>)}
                 {isOther && (<div className="relative flex items-center p-2 mt-2 rounded-md bg-background/10">
@@ -212,7 +212,7 @@ export const ConverChatItem = ({
                         rel="noopener noreferrer"
                         className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline"
                     >
-                        File {fileType}
+                        Файл {fileType}
                     </a>
                 </div>)}
                 {!fileUrl && !isEditing && (
@@ -243,11 +243,11 @@ export const ConverChatItem = ({
                             </FormItem>)}
                         />
                         <Button disabled={isLoading} size="sm">
-                            Save
+                            Сохранить
                         </Button>
                     </form>
                     <span className="text-[10px] mt-1 text-zinc-400">
-                Press escape to cancel, enter to save
+                Нажмите escape для отмены, enter для сохранения
               </span>
                 </Form>)}
             </div>

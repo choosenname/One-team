@@ -11,8 +11,6 @@ import * as React from "react";
 import {Input} from "@/components/ui/input";
 import {Conversation} from "@prisma/client";
 
-// import {ChatVideoButton} from "@/components/chat/chat-video-button";
-
 interface ChatHeaderProps {
     name: string;
     type: "channel" | "conversation";
@@ -37,7 +35,7 @@ export const ChatHeader = ({
                 {name}
             </p>
             <div className="ml-auto flex items-center">
-                <Input placeholder="Search a messages"
+                <Input placeholder="Поиск по сообщениям"
                        value={searchMessage}
                        onChange={(e) => setSearchMessage(e.target.value)}
                 />

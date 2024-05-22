@@ -5,7 +5,7 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 export const ErrorCard = () => {
     return (
         <CardWrapper
-            headerLabel="Oops! Something went wrong!"
+            headerLabel="Упс! Что-то пошло не так!"
             backButtonHref="/auth/login"
             backButtonLabel="Back to login"
         >
