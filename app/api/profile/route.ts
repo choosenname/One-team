@@ -38,3 +38,13 @@ export async function PATCH(
         return new NextResponse("Internal Error", { status: 500 });
     }
 }
+
+export async function GET() {
+    try {
+        const user = await currentUser();
+        return NextResponse.json(user);
+    } catch (error) {
+        console.log("[PROFILE_GET]", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}

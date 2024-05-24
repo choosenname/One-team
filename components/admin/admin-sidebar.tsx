@@ -18,8 +18,8 @@ export const AdminSidebar = async () => {
             </div>
             <div className="px-3">
                 <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2"/>
-                <AdminSection label={"Users"} icon={<Users/>} link={"users"}/>
-                <AdminSection label={"Servers"} icon={<Server/>} link={"servers"}/>
+                <AdminSection label={"Сотрудники"} icon={<Users/>} link={"users"}/>
+                <AdminSection label={"Сервера"} icon={<Server/>} link={"servers"}/>
             </div>
         </div>)
 }

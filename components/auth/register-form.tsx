@@ -24,6 +24,7 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {Department} from "@prisma/client";
 import axios from "axios";
 import {inviteUser} from "@/actions/invite";
+import {TimePickerDemo} from "@/components/time-picker/time-picker-demo";
 
 export const RegisterForm = () => {
     const [error, setError] = useState<string | undefined>("");
@@ -37,6 +38,10 @@ export const RegisterForm = () => {
             name: "",
             password: "",
             departmentId: "",
+            post: "",
+            office: "",
+            startWork: new Date(),
+            endWork: new Date(),
         },
     });
 
@@ -83,7 +88,7 @@ export const RegisterForm = () => {
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                                    <FormLabel>Имя</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
@@ -100,13 +105,79 @@ export const RegisterForm = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel>Пароль</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
                                             disabled={isPending}
                                             placeholder="******"
                                             type="password"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="post"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Должность</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder=""
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="office"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Кабинет</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            {...field}
+                                            disabled={isPending}
+                                            placeholder=""
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="startWork"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Время начала работы</FormLabel>
+                                    <FormControl>
+                                        <TimePickerDemo
+                                            setDate={field.onChange}
+                                            date={field.value}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="endWork"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Время конца работы</FormLabel>
+                                    <FormControl>
+                                        <TimePickerDemo
+                                            setDate={field.onChange}
+                                            date={field.value}
                                         />
                                     </FormControl>
                                     <FormMessage />
