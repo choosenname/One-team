@@ -16,6 +16,7 @@ import {DeleteMessageModal} from "@/components/modals/delete-message-modal";
 import {EditProfileModal} from "@/components/modals/edit-profile-modal";
 import {ForwardMessageModal} from "@/components/modals/forward-message-modal";
 import {CreateServerAdminModal} from "@/components/modals/create-server-admin-modal";
+import {ChatImageModal} from "@/components/modals/chat-image-modal";
 
 export const ModalProvider = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -44,6 +45,7 @@ export const ModalProvider = () => {
             <DeleteMessageModal />
             <EditProfileModal />
             <ForwardMessageModal/>
+            <ChatImageModal/>
         </>
     )
 }

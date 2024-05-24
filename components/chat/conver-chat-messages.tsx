@@ -2,7 +2,7 @@
 
 import {ElementRef, Fragment, useEffect, useRef} from "react";
 import {format} from "date-fns";
-import {Member, Message, User} from "@prisma/client";
+import {Conversation, Member, Message, User} from "@prisma/client";
 import {Loader2, ServerCrash} from "lucide-react";
 
 import {useChatQuery} from "@/hooks/use-chat-query";
@@ -20,6 +20,7 @@ const DATE_FORMAT = "d MMM yyyy, HH:mm";
 interface ChatMessagesProps {
     name: string;
     member: ExtendedUser;
+    conversation: Conversation;
     chatId: string;
     apiUrl: string;
     socketUrl: string;
@@ -36,6 +37,7 @@ export const ConverChatMessages = ({
                                  member,
                                  chatId,
                                  apiUrl,
+                                       conversation,
                                  socketUrl,
                                  socketQuery,
                                  paramKey,
@@ -93,7 +95,7 @@ export const ConverChatMessages = ({
         </div>)
     }
 
-    return (<div ref={chatRef} className="flex-1 flex flex-col py-4 overflow-y-auto">
+    return (<div ref={chatRef} style={{backgroundImage: `url(${conversation.Background})`}} className="flex-1 flex flex-col py-4 overflow-y-auto">
         {!hasNextPage && <div className="flex-1"/>}
         {!hasNextPage && (<ChatWelcome
             type={type}

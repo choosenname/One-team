@@ -37,6 +37,7 @@ export const ConverWrapper = ({currentMember, otherMember, conversation}: ChatWr
                 member={currentMember}
                 name={otherMember.name}
                 chatId={conversation.id}
+                conversation={conversation}
                 type="conversation"
                 apiUrl="/api/direct-messages"
                 paramKey="conversationId"

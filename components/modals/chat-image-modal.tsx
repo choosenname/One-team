@@ -1,4 +1,4 @@
-    "use client";
+"use client";
 
 import axios from "axios";
 import * as z from "zod";
@@ -18,27 +18,19 @@ import { useEffect, useState } from "react";
 import { Department } from "@prisma/client";
 
 const formSchema = z.object({
-    name: z.string().min(1, {
-        message: "Имя сервера обязательно."
-    }),
-    imageUrl: z.string().min(1, {
-        message: "Изображение сервера обязательно."
-    }),
-    departmentId: z.string().min(1, {
-        message: "Отдел обязателен."
-    }),
+    imageUrl: z.string()
 });
 
-export const CreateServerModal = () => {
-    const { isOpen, onClose, type } = useModal();
+export const ChatImageModal = () => {
+    const { isOpen, onClose, type , data} = useModal();
     const [departments, setDepartments] = useState<Department[]>([]);
     const router = useRouter();
 
-    const isModalOpen = isOpen && type === "createServer";
+    const isModalOpen = isOpen && type === "chatImage";
 
     const form = useForm({
         resolver: zodResolver(formSchema), defaultValues: {
-            name: "", imageUrl: "", departmentId: 'personal'
+            imageUrl: "",
         }
     });
 
@@ -46,7 +38,7 @@ export const CreateServerModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.post("/api/servers", values);
+            await axios.patch(`/api/conversation/${data.conversationId}`, values);
 
             form.reset();
             router.refresh();
@@ -78,10 +70,10 @@ export const CreateServerModal = () => {
             <DialogContent className="bg-white text-black p-0 overflow-hidden">
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Настройте ваш сервер
+                        Настройте чат
                     </DialogTitle>
                     <DialogDescription className="text-center text-zinc-500">
-                        Придумайте имя и добавьте изображение для вашего сервера. Вы всегда сможете изменить это позже.
+                        Настройте фон чата
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -104,33 +96,10 @@ export const CreateServerModal = () => {
                                     )}
                                 />
                             </div>
-
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel
-                                            className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70"
-                                        >
-                                            Имя сервера
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={isLoading}
-                                                className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                                                placeholder="Введите имя сервера"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
                         </div>
                         <DialogFooter className="bg-gray-100 px-6 py-4">
                             <Button disabled={isLoading}>
-                                Создать
+                                Сохранить
                             </Button>
                         </DialogFooter>
                     </form>
