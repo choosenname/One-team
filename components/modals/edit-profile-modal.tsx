@@ -27,12 +27,13 @@ import { FileUpload } from "@/components/files/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { ProfileSchema } from "@/schemas";
+import {User} from "@prisma/client";
 
 export const EditProfileModal = () => {
     const { isOpen, onClose, type, data } = useModal();
     useRouter();
     const isModalOpen = isOpen && type === "editProfile";
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     useEffect(() => {
         const fetchUser = async () => {
