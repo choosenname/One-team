@@ -28,6 +28,10 @@ model User {
   updatedAt              DateTime        @updatedAt
   departmentId           String          @db.ObjectId
   department             Department      @relation(name: "DepartmentToUser", fields: [departmentId], references: [id])
+  post                   String
+  office                 String
+  startWork              DateTime
+  endWork                DateTime
   directMessages         DirectMessage[]
   conversationsInitiated Conversation[]  @relation("MemberOne")
   conversationsReceived  Conversation[]  @relation("MemberTwo")
@@ -107,6 +111,7 @@ model Conversation {
   memberTwoId    String          @db.ObjectId
   memberTwo      User            @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
   isNotify       Boolean         @default(true) @db.Bool
+  Background     String?
   directMessages DirectMessage[]
 
   @@unique([memberOneId, memberTwoId])

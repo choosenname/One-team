@@ -18,6 +18,14 @@ import {Server} from "@prisma/client";
 import {DeleteServerMenuItem} from "@/components/admin/items/delete-server-item";
 import axios from "axios";
 
+const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('ru-RU', {
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(date);
+}
+
 export const UserColumn: ColumnDef<FullUserType>[] = [
     {
         accessorKey: "imageUrl",
@@ -29,15 +37,33 @@ export const UserColumn: ColumnDef<FullUserType>[] = [
     },
     {
         accessorKey: "name",
-        header: "Name",
+        header: "Имя",
     },
     {
         accessorKey: "role",
-        header: "Role",
+        header: "Роль",
     },
     {
         accessorKey: "department.department",
-        header: "Department",
+        header: "Отдел",
+    },
+    {
+        accessorKey: "post",
+        header: "Должность",
+    },
+    {
+        accessorKey: "office",
+        header: "Кабинет",
+    },
+    {
+        accessorKey: "startWork",
+        header: "Время начала работы",
+        cell: ({ row }) => formatTime(row.getValue("startWork") as string),
+    },
+    {
+        accessorKey: "endWork",
+        header: "Время конца работы",
+        cell: ({ row }) => formatTime(row.getValue("endWork") as string),
     },
     {
         id: "actions",
@@ -48,16 +74,16 @@ export const UserColumn: ColumnDef<FullUserType>[] = [
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
+                            <span className="sr-only">Открыть меню</span>
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>Действия</DropdownMenuLabel>
                         <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(original.id)}
                         >
-                            Copy user ID
+                            Копировать ID пользователя
                         </DropdownMenuItem>
                         <DropdownMenuItem
                             onClick={() => axios.delete(`/api/profile/${original.id}`)}
@@ -84,11 +110,11 @@ export const ServerColumn: ColumnDef<FullServerType>[] = [
     },
     {
         accessorKey: "name",
-        header: "Name",
+        header: "Имя",
     },
     {
         accessorKey: "department.department",
-        header: "Department",
+        header: "Отдел",
     },
     {
         id: "actions",
@@ -100,16 +126,16 @@ export const ServerColumn: ColumnDef<FullServerType>[] = [
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
+                            <span className="sr-only">Открыть меню</span>
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>Действия</DropdownMenuLabel>
                         <DropdownMenuItem
                             onClick={() => navigator.clipboard.writeText(original.id)}
                         >
-                            Copy server ID
+                            Копировать ID сервера
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DeleteServerMenuItem original={server} />

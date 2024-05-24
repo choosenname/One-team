@@ -4,7 +4,7 @@ import axios from "axios";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 
 import {
     Dialog,
@@ -27,12 +27,28 @@ import { FileUpload } from "@/components/files/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { ProfileSchema } from "@/schemas";
+import {User} from "@prisma/client";
 
 export const EditProfileModal = () => {
     const { isOpen, onClose, type, data } = useModal();
     useRouter();
     const isModalOpen = isOpen && type === "editProfile";
-    const { user } = data;
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get('/api/profile');
+                setUser(response.data);
+            } catch (error) {
+                console.error('Failed to fetch user:', error);
+            }
+        };
+
+        if (isModalOpen) {
+            fetchUser();
+        }
+    }, [isModalOpen]);
 
     const form = useForm({
         resolver: zodResolver(ProfileSchema),
@@ -46,7 +62,7 @@ export const EditProfileModal = () => {
     useEffect(() => {
         if (user) {
             form.setValue("name", user.name || "");
-            form.setValue("password", user.password || "");
+            form.setValue("password", "");
             form.setValue("imageUrl", user.imageUrl);
         }
     }, [user, form]);

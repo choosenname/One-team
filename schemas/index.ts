@@ -19,6 +19,18 @@ export const RegisterSchema = z.object({
     departmentId: z.string().min(1, {
         message: "Отдел обязателен для заполнения",
     }),
+    post: z.string().min(1, {
+        message: "Должность обязательна для заполнения",
+    }),
+    office: z.string().min(1, {
+        message: "Кабинет обязателен для заполнения",
+    }),
+    startWork: z.date().refine(date => !isNaN(date.getTime()), {
+        message: "Начало работы обязательно для заполнения",
+    }),
+    endWork: z.date().refine(date => !isNaN(date.getTime()), {
+        message: "Конец работы обязательно для заполнения",
+    }),
 });
 
 export const ProfileSchema = z.object({
