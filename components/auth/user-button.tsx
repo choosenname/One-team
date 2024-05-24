@@ -13,6 +13,7 @@ import {UserAvatar} from "@/components/user-avatar";
 import {Button} from "@/components/ui/button";
 import {useModal} from "@/hooks/use-modal-store";
 import {User} from "@prisma/client";
+import {useFontSize} from "@/components/providers/FontSizeProvider";
 
 
 interface UserButtonProps {
@@ -21,6 +22,7 @@ interface UserButtonProps {
 
 export const UserButton = ({user}: UserButtonProps) => {
     const { onOpen } = useModal();
+    const { changeFontSize } = useFontSize();
 
     return (
         <DropdownMenu>
@@ -34,9 +36,14 @@ export const UserButton = ({user}: UserButtonProps) => {
                         Профиль
                     </DropdownMenuItem>
                 </Button>
+                <div>
+                    <button onClick={() => changeFontSize('14px')}>14px</button>
+                    <button onClick={() => changeFontSize('16px')}>16px</button>
+                    <button onClick={() => changeFontSize('18px')}>18px</button>
+                </div>
                 <LogoutButton>
                     <DropdownMenuItem>
-                        <LogOut className="h-4 w-4 mr-2" />
+                        <LogOut className="h-4 w-4 mr-2"/>
                         Выйти
                     </DropdownMenuItem>
                 </LogoutButton>

@@ -23,6 +23,7 @@ import {FileType} from "next/dist/lib/file-exists";
 import {useModal} from "@/hooks/use-modal-store";
 import {useParams, useRouter} from "next/navigation";
 import {ExtendedUser} from "@/next-auth";
+import {useFontSize} from "@/components/providers/FontSizeProvider";
 
 interface ChatItemProps {
     id: string;
@@ -68,6 +69,7 @@ export const ConverChatItem = ({
     const {onOpen} = useModal();
     const params = useParams();
     const router = useRouter();
+    const { fontSize } = useFontSize();
 
     const onMemberClick = () => {
         if (member.id === currentMember.id) {
@@ -216,7 +218,8 @@ export const ConverChatItem = ({
                     </a>
                 </div>)}
                 {!fileUrl && !isEditing && (
-                    <p className={cn("text-sm text-zinc-600 dark:text-zinc-300", deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1")}>
+                    <p style={{fontSize: fontSize}} className={cn("text-sm text-zinc-600 dark:text-zinc-300",
+                        deleted && "italic text-zinc-500 dark:text-zinc-400 text-xs mt-1", )}>
                         {content}
                         {isUpdated && !deleted && (<span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)

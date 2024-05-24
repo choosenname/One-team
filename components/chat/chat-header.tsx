@@ -10,6 +10,7 @@ import {DatePicker} from "@/components/ui/date-picker";
 import * as React from "react";
 import {Input} from "@/components/ui/input";
 import {Conversation} from "@prisma/client";
+import {ChatImageButton} from "@/components/chat/chat-image-button";
 
 interface ChatHeaderProps {
     name: string;
@@ -35,6 +36,7 @@ export const ChatHeader = ({
                 {name}
             </p>
             <div className="ml-auto flex items-center">
+                <ChatImageButton conversationId={conversation?.id}/>
                 <Input placeholder="Поиск по сообщениям"
                        value={searchMessage}
                        onChange={(e) => setSearchMessage(e.target.value)}

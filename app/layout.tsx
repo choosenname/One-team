@@ -10,6 +10,7 @@ import {SocketProvider} from "@/components/providers/socket-provider";
 import {QueryProvider} from "@/components/providers/query-provider";
 import {Toaster} from "@/components/ui/toaster";
 import Notifications from "@/components/notifications";
+import { FontSizeProvider } from "@/components/providers/FontSizeProvider";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -37,7 +38,9 @@ export default async function RootLayout({
                 <QueryProvider>
                     <Toaster/>
                     <Notifications />
-                    {children}
+                    <FontSizeProvider>
+                        {children}
+                    </FontSizeProvider>
                 </QueryProvider>
             </SocketProvider>
         </ThemeProvider>
