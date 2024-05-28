@@ -1,5 +1,5 @@
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -9,16 +9,16 @@ generator client {
 }
 
 model Department {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
   department String   @unique
   users      User[]   @relation(name: "DepartmentToUser")
   servers    Server[] @relation(name: "DepartmentToServer")
 }
 
 model User {
-  id                     String          @id @default(auto()) @map("_id") @db.ObjectId
+  id                     String          @id @default(uuid())
   name                   String          @unique
-  imageUrl               String
+  imageUrl               String?
   password               String
   role                   UserRole        @default(USER)
   servers                Server[]        @relation(name: "ServerToUser")
@@ -26,7 +26,7 @@ model User {
   members                Member[]        @relation(name: "MemberToUser")
   createdAt              DateTime        @default(now())
   updatedAt              DateTime        @updatedAt
-  departmentId           String          @db.ObjectId
+  departmentId           String
   department             Department      @relation(name: "DepartmentToUser", fields: [departmentId], references: [id])
   post                   String
   office                 String
@@ -38,44 +38,44 @@ model User {
 }
 
 model Server {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  id           String     @id @default(uuid())
   name         String
   imageUrl     String
   inviteCode   String     @unique
-  userId       String     @db.ObjectId
+  userId       String
   user         User       @relation(name: "ServerToUser", fields: [userId], references: [id])
-  departmentId String     @db.ObjectId
+  departmentId String
   department   Department @relation(name: "DepartmentToServer", fields: [departmentId], references: [id])
   members      Member[]   @relation(name: "MemberToServer")
   channels     Channel[]  @relation(name: "ChannelToServer")
   createdAt    DateTime   @default(now())
-  updateAt     DateTime   @updatedAt
+  updatedAt    DateTime   @updatedAt
 
   @@index([userId])
 }
 
 model Member {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  id        String     @id @default(uuid())
   role      MemberRole @default(GUEST)
-  serverId  String     @db.ObjectId
+  serverId  String
   server    Server     @relation(name: "MemberToServer", fields: [serverId], references: [id], onDelete: Cascade)
-  userId    String     @db.ObjectId
+  userId    String
   user      User       @relation(name: "MemberToUser", fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]  @relation(name: "MemberToMessage")
   createdAt DateTime   @default(now())
-  updateAt  DateTime   @updatedAt
+  updatedAt DateTime   @updatedAt
 
   @@index([serverId])
   @@index([userId])
 }
 
 model Channel {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  id        String      @id @default(uuid())
   name      String
   type      ChannelType @default(TEXT)
-  userId    String      @db.ObjectId
+  userId    String
   user      User        @relation(name: "ChannelToUser", fields: [userId], references: [id])
-  serverId  String      @db.ObjectId
+  serverId  String
   server    Server      @relation(name: "ChannelToServer", fields: [serverId], references: [id])
   messages  Message[]   @relation(name: "ChannelToMessage")
   createdAt DateTime    @default(now())
@@ -86,15 +86,15 @@ model Channel {
 }
 
 model Message {
-  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  id              String    @id @default(uuid())
   content         String
   fileUrl         String?
-  sourceMessageId String?   @db.ObjectId
+  sourceMessageId String?
   sourceMessage   Message?  @relation(name: "MessageToSourceMessage", fields: [sourceMessageId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   reply           Message[] @relation("MessageToSourceMessage")
-  memberId        String    @db.ObjectId
+  memberId        String
   member          Member    @relation(name: "MemberToMessage", fields: [memberId], references: [id])
-  channelId       String    @db.ObjectId
+  channelId       String
   channel         Channel   @relation(name: "ChannelToMessage", fields: [channelId], references: [id])
   deleted         Boolean   @default(false)
   createdAt       DateTime  @default(now())
@@ -105,12 +105,12 @@ model Message {
 }
 
 model Conversation {
-  id             String          @id @default(auto()) @map("_id") @db.ObjectId
-  memberOneId    String          @db.ObjectId
+  id             String          @id @default(uuid())
+  memberOneId    String
   memberOne      User            @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
-  memberTwoId    String          @db.ObjectId
+  memberTwoId    String
   memberTwo      User            @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
-  isNotify       Boolean         @default(true) @db.Bool
+  isNotify       Boolean         @default(true)
   Background     String?
   directMessages DirectMessage[]
 
@@ -119,12 +119,12 @@ model Conversation {
 }
 
 model DirectMessage {
-  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  id             String       @id @default(uuid())
   content        String
   fileUrl        String?
-  memberId       String       @db.ObjectId
+  memberId       String
   member         User         @relation(fields: [memberId], references: [id], onDelete: Cascade)
-  conversationId String       @db.ObjectId
+  conversationId String
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   deleted        Boolean      @default(false)
   createdAt      DateTime     @default(now())
