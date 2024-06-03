@@ -1,7 +1,8 @@
-"use server";
+"use server"; // Использование серверной части кода
 
-import { signOut } from "@/auth";
+import { signOut } from "@/auth"; // Импорт функции выхода из системы из модуля аутентификации
 
+// Функция для выхода пользователя из системы
 export const logout = async () => {
-    await signOut();
+    await signOut(); // Вызов функции выхода из системы
 };

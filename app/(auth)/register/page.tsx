@@ -1,9 +1,10 @@
-import { RegisterForm } from "@/components/auth/register-form";
+import { RegisterForm } from "@/components/auth/register-form"; // Импорт компонента RegisterForm из модуля компонентов аутентификации
 
+// Компонент страницы регистрации
 const RegisterPage = () => {
     return (
-        <RegisterForm />
+        <RegisterForm /> // Вывод компонента RegisterForm для отображения формы регистрации
     );
 }
 
-export default RegisterPage;
+export default RegisterPage; // Экспорт компонента RegisterPage

@@ -1,11 +1,10 @@
-const AuthLayout = ({children}: {
-    children: React.ReactNode
-}) => {
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="h-full flex items-center justify-center">
-            {children}
+        // Внешний макет для страниц аутентификации
+        <div className="h-full flex items-center justify-center"> {/* Контейнер для центрирования содержимого */}
+            {children} {/* Отображение дочерних компонентов */}
         </div>
     );
 }
 
-export default AuthLayout;
+export default AuthLayout; // Экспорт компонента AuthLayout

@@ -16,7 +16,7 @@ interface ChatHeaderProps {
     name: string;
     type: "channel" | "conversation";
     conversation?: Conversation;
-    imageUrl?: string;
+    imageUrl: string | null;
     date: Date|undefined;
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
     searchMessage: string|undefined;
@@ -36,7 +36,7 @@ export const ChatHeader = ({
                 {name}
             </p>
             <div className="ml-auto flex items-center">
-                <ChatImageButton conversationId={conversation?.id}/>
+                {type === "conversation" && (<ChatImageButton conversationId={conversation?.id}/>)}
                 <Input placeholder="Поиск по сообщениям"
                        value={searchMessage}
                        onChange={(e) => setSearchMessage(e.target.value)}

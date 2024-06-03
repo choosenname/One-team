@@ -46,7 +46,7 @@ export const LoginForm = () => {
                         control={form.control}
                         name="name"
                         render={({field}) => (<FormItem>
-                            <FormLabel>Name</FormLabel>
+                            <FormLabel>Имя</FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}
@@ -61,7 +61,7 @@ export const LoginForm = () => {
                         control={form.control}
                         name="password"
                         render={({field}) => (<FormItem>
-                            <FormLabel>Password</FormLabel>
+                            <FormLabel>Пароль</FormLabel>
                             <FormControl>
                                 <Input
                                     {...field}

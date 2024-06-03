@@ -1,56 +1,58 @@
 import React from "react";
-import {getOrCreateConversation} from "@/lib/conversation";
-import {getMessages} from "@/lib/messages";
-import EmptyState from "@/components/conversation/empty-state";
-import {ConverWrapper} from "@/components/chat/conver-wrapper";
-import {currentUser} from "@/lib/auth";
-import {useOtherUser} from "@/lib/users";
-import {db} from "@/lib/db";
-import {redirect} from "next/navigation";
+import { getOrCreateConversation } from "@/lib/conversation"; // Импорт функции для получения или создания беседы
+import EmptyState from "@/components/conversation/empty-state"; // Импорт компонента пустого состояния чата
+import { ConverWrapper } from "@/components/chat/conver-wrapper"; // Импорт оболочки чата
+import { currentUser } from "@/lib/auth"; // Импорт функции для получения текущего пользователя
+import { db } from "@/lib/db"; // Импорт объекта базы данных
+import { redirect } from "next/navigation"; // Импорт функции перенаправления из модуля навигации Next.js
 
+// Интерфейс для параметров страницы беседы
 interface Iparams {
-    memberId: string;
+    memberId: string; // Идентификатор участника беседы
 }
 
+// Компонент страницы беседы
 const PageConversation = async ({ params }: { params: Iparams }) => {
-    const user = await currentUser();
+    const user = await currentUser(); // Получение текущего пользователя
 
-    if (!user) {
-        return ("/auth/login");
+    if (!user) { // Если пользователь не авторизован
+        return ("/auth/login"); // Перенаправление на страницу входа
     }
 
-    const currentMember = await db.user.findFirst({
+    const currentMember = await db.user.findFirst({ // Поиск текущего пользователя в базе данных
         where: {
-            id: user.id,
+            id: user.id, // Идентификатор текущего пользователя
         },
     });
 
-    if (!currentMember) {
-        return redirect("/");
+    if (!currentMember) { // Если текущий пользователь не найден
+        return redirect("/"); // Перенаправление на главную страницу
     }
 
+    // Получение или создание беседы между текущим пользователем и участником, переданным в параметрах
     const conversation = await getOrCreateConversation(currentMember.id, params.memberId);
 
-    if (!conversation) {
+    if (!conversation) { // Если беседа не найдена или не создана
         return (
-            <EmptyState/>
+            <EmptyState/> // Отображение пустого состояния чата
         );
     }
 
-    const curUser = await currentUser();
+    const curUser = await currentUser(); // Получение текущего пользователя
 
-    if (!curUser) {
-        return ("/auth/login");
+    if (!curUser) { // Если текущий пользователь не найден
+        return ("/auth/login"); // Перенаправление на страницу входа
     }
 
-    const { memberOne, memberTwo } = conversation;
+    const { memberOne, memberTwo } = conversation; // Получение участников беседы
 
+    // Определение участника чата, отличного от текущего пользователя
     const otherMember = memberOne.id === user.id ? memberTwo : memberOne;
 
-
+    // Отображение оболочки чата с переданными параметрами
     return (
         <ConverWrapper currentMember={currentMember} otherMember={otherMember} conversation={conversation} />
     );
 };
 
-export default PageConversation;
+export default PageConversation; // Экспорт компонента PageConversation

@@ -1,51 +1,52 @@
-import { redirect } from "next/navigation";
+import { redirect } from "next/navigation"; // Импорт функции перенаправления страницы
+import { db } from "@/lib/db"; // Импорт объекта базы данных
+import { currentUser } from "@/lib/auth"; // Импорт функции получения текущего пользователя
 
-import { db } from "@/lib/db";
-import {currentUser} from "@/lib/auth";
-
+// Интерфейс для параметров страницы ServerIdPage
 interface ServerIdPageProps {
     params: {
-        serverId: string;
+        serverId: string; // Идентификатор сервера
     }
 }
 
-const ServerIdPage = async ({
-                                params
-                            }: ServerIdPageProps) => {
-    const user = await currentUser();
+// Функция ServerIdPage для обработки запроса страницы по идентификатору сервера
+const ServerIdPage = async ({ params }: ServerIdPageProps) => {
+    const user = await currentUser(); // Получение текущего пользователя
 
     if (!user) {
-        return redirect("/auth/login");
+        return redirect("/auth/login"); // Перенаправление на страницу входа, если пользователь не авторизован
     }
 
+    // Поиск сервера по его идентификатору и проверка принадлежности текущему пользователю
     const server = await db.server.findUnique({
         where: {
-            id: params.serverId,
+            id: params.serverId, // Идентификатор сервера из параметров
             members: {
                 some: {
-                    userId: user.id,
+                    userId: user.id, // Проверка, что текущий пользователь является членом сервера
                 }
             }
         },
         include: {
-            channels: {
+            channels: { // Включение каналов сервера
                 where: {
-                    name: "general"
+                    name: "general" // Фильтрация по имени канала "general"
                 },
                 orderBy: {
-                    createdAt: "asc"
+                    createdAt: "asc" // Сортировка каналов по дате создания
                 }
             }
         }
-    })
+    });
 
-    const initialChannel = server?.channels[0];
+    const initialChannel = server?.channels[0]; // Получение первого канала из результата запроса
 
+    // Проверка, что первый канал существует и его имя "general"
     if (initialChannel?.name !== "general") {
-        return null;
+        return null; // Возврат null, если первый канал не является "general"
     }
 
-    return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`)
+    return redirect(`/servers/${params.serverId}/channels/${initialChannel?.id}`); // Перенаправление на первый канал сервера
 }
 
-export default ServerIdPage;
+export default ServerIdPage; // Экспорт функции ServerIdPage

@@ -216,7 +216,7 @@ export const RegisterForm = () => {
                         type="submit"
                         className="w-full"
                     >
-                        Создать аккаунт
+                        Создать сотрудника
                     </Button>
                 </form>
             </Form>
