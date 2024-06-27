@@ -10,7 +10,7 @@ import {ConverChatMessages} from "@/components/chat/conver-chat-messages";
 import {ExtendedUser} from "@/next-auth";
 
 interface ChatWrapperProps {
-    currentMember: ExtendedUser;
+    currentMember: User;
     otherMember: User;
     conversation: Conversation;
 }

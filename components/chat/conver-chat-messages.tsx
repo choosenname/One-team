@@ -19,7 +19,7 @@ const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
 interface ChatMessagesProps {
     name: string;
-    member: ExtendedUser;
+    member: User;
     conversation: Conversation;
     chatId: string;
     apiUrl: string;

@@ -63,7 +63,7 @@ export const EditProfileModal = () => {
         if (user) {
             form.setValue("name", user.name || "");
             form.setValue("password", "");
-            form.setValue("imageUrl", user.imageUrl);
+            form.setValue("imageUrl", user.imageUrl || "");
         }
     }, [user, form]);
 

@@ -35,7 +35,7 @@ interface ChatItemProps {
         user: User;
     } | null;
     deleted: boolean;
-    currentMember: ExtendedUser;
+    currentMember: User;
     isUpdated: boolean;
     socketUrl: string;
     socketQuery: Record<string, string>;

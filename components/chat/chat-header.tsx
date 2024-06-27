@@ -16,7 +16,7 @@ interface ChatHeaderProps {
     name: string;
     type: "channel" | "conversation";
     conversation?: Conversation;
-    imageUrl?: string;
+    imageUrl: string | null;
     date: Date|undefined;
     setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
     searchMessage: string|undefined;

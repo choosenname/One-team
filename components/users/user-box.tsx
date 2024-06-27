@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import {UserAvatar} from "@/components/user-avatar";
 import {ExtendedUser} from "@/next-auth";
+import {User} from "@prisma/client";
 
 interface UserBoxProps {
-    data: ExtendedUser;
+    data: User;
 }
 
 export const UserBox = ({ data }: UserBoxProps) => {

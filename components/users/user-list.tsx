@@ -1,8 +1,9 @@
 import {UserBox} from "@/components/users/user-box";
 import {ExtendedUser} from "@/next-auth";
+import {User} from "@prisma/client";
 
 interface UserListProps {
-    items: ExtendedUser[];
+    items: User[];
 }
 
 export const UserList = ({items}:UserListProps) => {
